@@ -6,49 +6,49 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sabio.Data
+namespace TMX.Data.Providers.Structured
 {
-    public class NVarcharTable : IEnumerable<SqlDataRecord>
+  public class NVarcharTable : IEnumerable<SqlDataRecord>
+  {
+    private IEnumerable<string> _items;
+
+    public NVarcharTable(IEnumerable<string> items)
     {
-        private IEnumerable<string> _items;
 
-        public NVarcharTable(IEnumerable<string> items)
-        {
-
-            _items = items;
-        }
-
-
-        private static SqlDataRecord GetRecord()
-        {
-             return  new SqlDataRecord(
-                     new SqlMetaData[] { new SqlMetaData("Data", SqlDbType.NVarChar, -1) }
-                );
-        }      
-
-        public IEnumerator<SqlDataRecord> GetEnumerator()
-        {
-           
-            if(_items!=null)
-            {
-                foreach (string item in _items)
-                {
-
-                    var rec = GetRecord();
-
-                    rec.SetString(0,item);
-
-                    yield return rec;
-                }
-            
-            }
-
-            yield break;
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+      _items = items;
     }
+
+
+    private static SqlDataRecord GetRecord()
+    {
+      return new SqlDataRecord(
+              new SqlMetaData[] { new SqlMetaData("Data", SqlDbType.NVarChar, -1) }
+         );
+    }
+
+    public IEnumerator<SqlDataRecord> GetEnumerator()
+    {
+
+      if (_items != null)
+      {
+        foreach (string item in _items)
+        {
+
+          var rec = GetRecord();
+
+          rec.SetString(0, item);
+
+          yield return rec;
+        }
+
+      }
+
+      yield break;
+    }
+
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    {
+      return GetEnumerator();
+    }
+  }
 }

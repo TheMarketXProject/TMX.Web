@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewBag.Title = "Office Practice Cases";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<header class="content">
+    <h2>Office Practice Cases</h2>
+    <p>@Html.ActionLink("Create New Case", "Add")</p>
+</header>
+
+<div class="container">
+    <div data-ng-controller="officeController as dashboard">
+        <div class="row">
+            <table>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Age</th>
+                    <th>Gravity</th>
+                    <th>Parity</th>
+                    <th>Visits</th>
+                    <th>Problem</th>
+                    <th>Diagnostic Procedures</th>
+                    <th>Complications</th>
+                    <th>Treatment</th>
+                    <th>Result</th>
+                    <th>Date Added</th>
+                    <th>Date Modified</th>
+                </tr>
+                <tr data-ng-repeat="officeCase in dashboard.officeCases">
+                    <td>{{officeCase.PatientID}}</td>
+                    <td>{{officeCase.Age}}</td>
+                    <td>{{officeCase.Gravity}}</td>
+                    <td>{{officeCase.Parity}}</td>
+                    <td>{{officeCase.Visits}}</td>
+                    <td>{{officeCase.Problem}}</td>
+                    <td>{{officeCase.DiagnosticProc}}</td>
+                    <td>{{officeCase.Complication.Category}}</td>
+                    <td>{{officeCase.Treatment}}</td>
+                    <td>{{officeCase.Result}}</td>
+                    <td>{{officeCase.DateAdded | date: "M/d/yyyy"}}</td>
+                    <td>{{officeCase.DateModified | date: "M/d/yyyy"}}</td>
+                    <td><a ng-href="http://TMX.dev/officecases/{{officeCase.Id}}" title="Edit">Edit</a></td>
+                    <td><a ng-href="javascript:void(0)" title="Delete" ng-click="dashboard.onDeleteOfficePracticeCase(officeCase)">Delete</a></td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/TMX.services.officePractice.js"></script>
+    <script type="text/javascript">
+
+        TMX.page.startUp = function () {
+            TMX.page.userController = TMX.ng.getControllerInstance($("#officeCtrl"));
+        }
+
+        TMX.services.officeFactory = function ($baseService) {
+            var aTMXServiceObject = TMX.services.officePractice;
+            var newService = $baseService.merge(true, {}, aTMXServiceObject, $baseService);
+            return newService;
+        }
+
+        TMX.ng.addService(TMX.ng.app.module,
+            "$officeService",
+            ["$baseService"],
+            TMX.services.officeFactory);
+
+        TMX.page.officeControllerFactory = function ($scope, $baseController, $officeService) {
+
+            var vm = this;
+
+            $baseController.merge(vm, $baseController);
+
+            vm.$officeService = $officeService;
+            vm.$scope = $scope;
+
+            //PUBLIC HANDLERS
+            vm.onGetListSuccess = _onGetListSuccess;
+            vm.onDeleteOfficePracticeCase = _onDeleteOfficePracticeCase;
+            vm.onDeleteSuccess = _onDeleteSuccess;
+            vm.onError = _onError;
+
+            //PUBLIC MEMBERS
+            vm.officeCases = null;
+            vm.deletedOfficePracticeCase = null;
+
+            vm.notify = vm.$officeService.getNotifier($scope);
+
+            render();
+
+            function render() {
+                vm.$officeService.getOfficePracticeCaseList(vm.onGetListSuccess, vm.onError);
+            };
+
+            function _onGetListSuccess(data) {
+                vm.notify(function () {
+                    vm.officeCases = data.Items;
+                    console.log(vm.officeCases);
+                });
+            }
+
+            function _onDeleteOfficePracticeCase(officeCase) {
+                if (confirm("Are you sure you want to delete this case?") == true) {
+                    vm.$officeService.deleteOfficePracticeCase(officeCase.Id, vm.onDeleteSuccess, vm.onError);
+                    vm.deletedOfficePracticeCase = officeCase;
+                } else {
+                    console.log("Cancelled");
+                }
+            }
+
+            function _onDeleteSuccess() {
+                console.log("Deleting Case");
+                vm.notify(function () {
+                    var index = vm.officeCases.indexOf(vm.deletedOfficePracticeCase);
+                    if (index > -1) {
+                        vm.officeCases.splice(index, 1);
+                    }
+                });
+                alert("Case deleted!");
+            }
+
+            function _onError(jqXHR, textStatus, errorThrown) {
+                vm.error = "An error has occurred!";
+                console.log(vm.error);
+                window.alert(vm.error);
+            }
+        }
+
+        TMX.ng.addController(TMX.ng.app.module,
+                "officeController",
+                ['$scope', '$baseController', "$officeService"],
+                TMX.page.officeControllerFactory);
+    </script>
+}

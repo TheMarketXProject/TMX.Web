@@ -1,0 +1,370 @@
+﻿
+@{
+    ViewBag.Title = "ObCaseFormJQ";
+}
+
+<h2>ObCaseFormJQ</h2>
+
+<div class="block full block-alt-noborder">
+    <div id="formContainer" class="block push-bit form-horizontal form-bordered form-control-borderless">
+        <form class="form-horizontal form-bordered form-control-borderless" id="obForm" name="obForm" onsubmit="return false">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Patient ID
+                    <div class="input-group">
+                        <input type="text" placeholder="" style="width: 150px;" id="patient" name="patient" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Age
+                    <div class="input-group">
+                        <input type="number" placeholder="" style="width: 75px;" id="age" name="age" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Gravity
+                    <div class="input-group">
+                        <input type="number" placeholder="" style="width: 75px;" id="gravity" name="gravity" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Parity
+                    <div class="input-group">
+                        <input type="number" placeholder="" style="width: 75px;" id="term" name="term" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Complications
+                    <div class="input-group">
+                        Antepartum
+                        <select class="select-select2 form-control" id="anteComp" name="anteComp">
+                            <option value=""></option>
+                            <option value="option-1">Preconception evaluation, prenatal and genetic diagnoses</option>
+                            <option value="option-2">Ultrasonography</option>
+                            <option value="option-3">Premature labor</option>
+                            <option value="option-4">Premature rupture of fetal membranes at term</option>
+                            <option value="option-5">Preterm premature rupture of fetal membranes</option>
+                            <option value="option-6">Cerclage</option>
+                            <option value="option-7">Preterm delivery (before 37 weeks gestation)</option>
+                            <option value="option-8">Late preterm (37 weeks 0 days to 38 weeks 6 days gestation)</option>
+                            <option value="option-9">Post term pregnancy and delivery</option>
+                            <option value="option-10">Induction and augmentation abnormalities (e.g. variable or late deceleration, absent of poor variability)</option>
+                            <option value="option-11">Labor abnormalities (including dystocia)</option>
+                            <option value="option-12">Fetal heart rate abnormalities (e.g. variable or late deceleration, absent or poor variability, tachycardia, bradycardia)</option>
+                            <option value="option-13">Breech and other fetal malpresentations</option>
+                            <option value="option-14">Cord problems (e.g. prolapsed cord, cord entanglement)</option>
+                            <option value="option-15">Operative vaginal delivery (e.g. vacuum, forceps)</option>
+                            <option value="option-16">Obstetrial hemmorage (e.g. antepartum, intrapartum, postpartum)</option>
+                            <option value="option-17">Obstetrical vaginal lacerations (e.g. 3rd and 4th degree lacerations cervical laceration)</option>
+                            <option value="option-18">Vaginal or perineal hematoma</option>
+                            <option value="option-19">Primary cesarean delivery</option>
+                            <option value="option-20">Repeat cesarean delivery</option>
+                            <option value="option-21">Vaginal birth after cesarean delivery</option>
+                            <option value="option-22">Cesarean hysterectomy</option>
+                            <option value="option-23">Complications of cesarean delivery (e.g. hemorrhage, wound infection, disruption or hematoma)</option>
+                            <option value="option-24">Complications of OB anesthesia</option>
+                            <option value="option-25">Intrapartum or intra-amniotic infection (e.g. amnionitis, chorioamnionitis)</option>
+                            <option value="option-26">Puerperal infection (e.g. post cesarean endometritis)</option>
+                            <option value="option-27">Second trimester spontaneous abortion</option>
+                            <option value="option-28">Third trimester fetal loss</option>
+                            <option value="option-29">Hypertensive disorders of pregnancy (chronic hypertension, preeclampsia, eclampsia)</option>
+                            <option value="option-30">Cardiovascular or pulmonary disease complicating pregnancy</option>
+                            <option value="option-31">Renal of neruological disease complicating pregnancy</option>
+                            <option value="option-32">Hematological or endocrine diseases complicating pregnancy</option>
+                            <option value="option-33">Autoimmune disorders of pregnancy</option>
+                            <option value="option-34">Infectious diesases (HIV, Group A streptococcus, etc.)</option>
+                            <option value="option-35">Psychiatric disease complicating pregnancy</option>
+                            <option value="option-36">Pregnancies complicated by human immunodeficiency virus infection (HIV)</option>
+                            <option value="option-37">Abnormal fetal growth</option>
+                            <option value="option-38">Pregnancies complicated by fetal abnormalities</option>
+                            <option value="option-39">Placental abnormalities</option>
+                            <option value="option-40">Thromboembolic complications</option>
+                            <option value="option-41">Trauma in pregnancy (e.g. automobile accidents)</option>
+                            <option value="option-99">Uncategorized (cases in this category do not count toward the required 20 cases)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        Delivery/Postpartum
+                        <select class="select-select2 form-control" id="postComp" name="postComp">
+                            <option value=""></option>
+                            <option value="option-1">Preconception evaluation, prenatal and genetic diagnoses</option>
+                            <option value="option-2">Ultrasonography</option>
+                            <option value="option-3">Premature labor</option>
+                            <option value="option-4">Premature rupture of fetal membranes at term</option>
+                            <option value="option-5">Preterm premature rupture of fetal membranes</option>
+                            <option value="option-6">Cerclage</option>
+                            <option value="option-7">Preterm delivery (before 37 weeks gestation)</option>
+                            <option value="option-8">Late preterm (37 weeks 0 days to 38 weeks 6 days gestation)</option>
+                            <option value="option-9">Post term pregnancy and delivery</option>
+                            <option value="option-10">Induction and augmentation abnormalities (e.g. variable or late deceleration, absent of poor variability)</option>
+                            <option value="option-11">Labor abnormalities (including dystocia)</option>
+                            <option value="option-12">Fetal heart rate abnormalities (e.g. variable or late deceleration, absent or poor variability, tachycardia, bradycardia)</option>
+                            <option value="option-13">Breech and other fetal malpresentations</option>
+                            <option value="option-14">Cord problems (e.g. prolapsed cord, cord entanglement)</option>
+                            <option value="option-15">Operative vaginal delivery (e.g. vacuum, forceps)</option>
+                            <option value="option-16">Obstetrial hemmorage (e.g. antepartum, intrapartum, postpartum)</option>
+                            <option value="option-17">Obstetrical vaginal lacerations (e.g. 3rd and 4th degree lacerations cervical laceration)</option>
+                            <option value="option-18">Vaginal or perineal hematoma</option>
+                            <option value="option-19">Primary cesarean delivery</option>
+                            <option value="option-20">Repeat cesarean delivery</option>
+                            <option value="option-21">Vaginal birth after cesarean delivery</option>
+                            <option value="option-22">Cesarean hysterectomy</option>
+                            <option value="option-23">Complications of cesarean delivery (e.g. hemorrhage, wound infection, disruption or hematoma)</option>
+                            <option value="option-24">Complications of OB anesthesia</option>
+                            <option value="option-25">Intrapartum or intra-amniotic infection (e.g. amnionitis, chorioamnionitis)</option>
+                            <option value="option-26">Puerperal infection (e.g. post cesarean endometritis)</option>
+                            <option value="option-27">Second trimester spontaneous abortion</option>
+                            <option value="option-28">Third trimester fetal loss</option>
+                            <option value="option-29">Hypertensive disorders of pregnancy (chronic hypertension, preeclampsia, eclampsia)</option>
+                            <option value="option-30">Cardiovascular or pulmonary disease complicating pregnancy</option>
+                            <option value="option-31">Renal of neruological disease complicating pregnancy</option>
+                            <option value="option-32">Hematological or endocrine diseases complicating pregnancy</option>
+                            <option value="option-33">Autoimmune disorders of pregnancy</option>
+                            <option value="option-34">Infectious diesases (HIV, Group A streptococcus, etc.)</option>
+                            <option value="option-35">Psychiatric disease complicating pregnancy</option>
+                            <option value="option-36">Pregnancies complicated by human immunodeficiency virus infection (HIV)</option>
+                            <option value="option-37">Abnormal fetal growth</option>
+                            <option value="option-38">Pregnancies complicated by fetal abnormalities</option>
+                            <option value="option-39">Placental abnormalities</option>
+                            <option value="option-40">Thromboembolic complications</option>
+                            <option value="option-41">Trauma in pregnancy (e.g. automobile accidents)</option>
+                            <option value="option-99">Uncategorized (cases in this category do not count toward the required 20 cases)</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Operative Procedures And/Or Treatment
+                    <div class="input-group">
+                        <input type="text" placeholder="" id="outcome" name="outcome" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <div class="input-group">
+                        Birth Weight<br>
+                        <div class="left">
+                            <input type="number" style="width: 80px;" id="weight" name="weight" class="form-control"> grams
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <div class="form-bordered">
+                        APGAR Score<br>
+                        <div>
+                            After 1 min
+                            <input type="radio" name="scoreOne" id="scoreOne" value="1"> 1
+                            <input type="radio" name="scoreOne" id="scoreOne" value="2"> 2
+                            <input type="radio" name="scoreOne" id="scoreOne" value="3"> 3
+                            <input type="radio" name="scoreOne" id="scoreOne" value="4"> 4
+                            <input type="radio" name="scoreOne" id="scoreOne" value="5"> 5
+                            <input type="radio" name="scoreOne" id="scoreOne" value="6"> 6
+                            <input type="radio" name="scoreOne" id="scoreOne" value="7"> 7
+                            <input type="radio" name="scoreOne" id="scoreOne" value="8"> 8
+                            <input type="radio" name="scoreOne" id="scoreOne" value="9"> 9
+                            <input type="radio" name="scoreOne" id="scoreOne" value="10"> 10
+                        </div>
+                        <div>
+                            After 5 min
+                            <input type="radio" name="scoreFive" id="scoreFive" value="1"> 1
+                            <input type="radio" name="scoreFive" id="scoreFive" value="2"> 2
+                            <input type="radio" name="scoreFive" id="scoreFive" value="3"> 3
+                            <input type="radio" name="scoreFive" id="scoreFive" value="4"> 4
+                            <input type="radio" name="scoreFive" id="scoreFive" value="5"> 5
+                            <input type="radio" name="scoreFive" id="scoreFive" value="6"> 6
+                            <input type="radio" name="scoreFive" id="scoreFive" value="7"> 7
+                            <input type="radio" name="scoreFive" id="scoreFive" value="8"> 8
+                            <input type="radio" name="scoreFive" id="scoreFive" value="9"> 9
+                            <input type="radio" name="scoreFive" id="scoreFive" value="10"> 10
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <div class="input-group">
+                        Length of stay<br>
+                        <input type="number" style="width: 80px;" id="stay" name="stay" class="form-control"> days
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6 text-left">
+                    <button type="submit" id="cmdSubmit" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Submit Notes</button>
+                    <button type="reset" id="cmdReset" class="btn btn-sm btn-warning"><i class="fa fa-repeat"></i> Reset</button>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/TMX.services.obstetrics.js"></script>
+
+    <script type="text/javascript">
+
+        TMX.page.startUp = function () {
+
+            //  call a separate function to set up validation rules
+            console.log("Checking");
+            TMX.page.rulesForValidation();
+
+            $("#cmdSubmit").on("click", TMX.page.handlers.onSubmitForm);
+            $("#cmdReset").on("click", TMX.page.handlers.onResetForm);
+        };
+
+        TMX.page.rulesForValidation = function () {
+            console.log("Validation Set");
+
+            //  set defaults for the entire plugin
+            jQuery.validator.setDefaults({
+                debug: true
+            });
+
+            //  set rules and error messages
+            $('#formContainer').validate({
+
+                errorClass: 'help-block animation-slideDown', // You can change the animation class for a different entrance animation - check animations page
+                errorElement: 'div',
+                errorPlacement: function (error, e) {
+                    e.parents('.form-group').append(error);
+
+                },
+                highlight: function (e) {
+                    $(e).closest('.form-group').removeClass('has-success has-error').addClass('has-error');
+                    $(e).closest('.help-block').remove();
+
+                },
+                success: function (e) {
+                    // You can use the following if you would like to highlight with green color the input after successful validation!
+                    e.closest('.form-group').removeClass('has-success has-error'); // e.closest('.form-group').removeClass('has-success has-error').addClass('has-success');
+                    e.closest('.help-block').remove();
+                },
+
+                rules: {
+                    "patient": {
+                        required: true
+                    },
+
+                    "age": {
+                        required: true,
+                        min: 13
+                    },
+
+                    "gravity": {
+                        required: true,
+                        min: 1
+                    },
+
+                    "parity": {
+                        required: true
+                    },
+
+                    "anteComp": {
+                        required: true
+                    },
+
+                    "postComp": {
+                        required: true
+                    },
+
+                    "outcome": {
+                        required: true,
+                        minlength: 5
+                    },
+
+                    "weight": {
+                        required: true,
+                        min: 500,
+                        max: 6000
+                    },
+
+                    "scoreOne": {
+                        required: true
+                    },
+
+                    "scoreFive": {
+                        required: true
+                    },
+
+                    "stay": {
+                        required: true
+                    }
+                }
+            });
+        };
+
+        TMX.page.handlers.onSubmitForm = function (evt) {
+            evt.preventDefault();
+            //TMX.page.echoInputs();
+            console.log("Submitting form");
+
+            if ($("#formContainer").valid()) {
+                var serializedData = $("#formContainer").serialize();
+                console.log(serializedData);
+            } else {
+                console.log("form is not valid");
+            }
+
+            /* if ($('#formContainer').valid()) {
+                 TMX.page.clickSerialize();
+                 console.log("Serial");
+                 var id = $("#id").val();
+
+                 if (id > 0) {                                                // if id is an empty string run POST or INSERT
+                     var id = $("#id").val();                 //declaring it and giving it the value of hidden id
+                     var myData = $("#formContainer").serialize();
+                     TMX.services.address.update(id, myData, TMX.page.ajaxUpdateSuccess, TMX.page.ajaxError);                             //otherwise run PUT or UPDATE
+                     console.log("update");
+                 }
+                 else {
+                     var myData = $("#formContainer").serialize();
+                     TMX.services.address.add(myData, TMX.page.ajaxSuccess, TMX.page.ajaxError);                            // POST OR INSERT
+                     console.log("insert");
+                 }
+             }
+             else {
+                 console.log("form is not valid")                // if form is not valid do not run
+             }*/
+        }
+
+        TMX.page.handlers.onResetForm = function () {
+
+            console.log("Resetting form");
+            //$("#id").val(null).trigger('change');
+            //$("#Line1").val(null).trigger('change');
+            //$("#Line2").val(null).trigger('change');
+            //$("#City").val(null).trigger('change');
+            //$("#countries").val(null).trigger('change');
+            //$("#states").val(null).trigger('change');
+            //$("#ZipCode").val(null).trigger('change');
+
+        }
+
+
+    </script>
+
+
+
+
+
+
+}

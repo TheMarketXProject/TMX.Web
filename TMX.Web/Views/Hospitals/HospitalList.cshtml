@@ -1,0 +1,131 @@
+﻿
+@{
+    ViewBag.Title = "Hospitals";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<header class="content">
+    <h2>Hospitals</h2>
+    <p>@Html.ActionLink("Create New Hospital", "Add")</p>
+</header>
+
+<div class="container">
+    <div data-ng-controller="hospitalsController as dashboard">
+        <div class="row">
+            <table>
+                <tr>
+                    <th>Hospital ID</th>
+                    <th>Name</th>
+                    <th>Abbrev</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Zip Code</th>
+                    <th>Gynecological Exams</th>
+                    <th>Obstetrical Exams</th>
+                    <th>Uncomplicated Deliveries</th>
+                </tr>
+                <tr data-ng-repeat="hospital in dashboard.hospitals">
+                    <td>{{hospital.Id}}</td>
+                    <td>{{hospital.Name}}</td>
+                    <td>{{hospital.Abbrev}}</td>
+                    <td>{{hospital.Address}}</td>
+                    <td>{{hospital.City}}</td>
+                    <td>{{hospital.State}}</td>
+                    <td>{{hospital.ZipCode}}</td>
+                    <td>{{hospital.GynExams}}</td>
+                    <td>{{hospital.ObExams}}</td>
+                    <td>{{hospital.Deliveries}}</td>
+                    <td><a ng-href="http://TMX.dev/hospitals/{{hospital.Id}}" title="Info">Info</a></td>
+                    <td><a ng-href="javascript:void(0)" title="Delete" ng-click="dashboard.onDeleteHospital(hospital)">Delete</a></td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+    <script src="~/Scripts/TMX.services.hospitals.js"></script>
+    <script type="text/javascript">
+
+        TMX.page.startUp = function () {
+            TMX.page.userController = TMX.ng.getControllerInstance($("#hospitalsCtrl"));
+        }
+
+        TMX.services.hospitalsFactory = function ($baseService) {
+            var aTMXServiceObject = TMX.services.hospitals;
+            var newService = $baseService.merge(true, {}, aTMXServiceObject, $baseService);
+            return newService;
+        }
+
+        TMX.ng.addService(TMX.ng.app.module,
+            "$hospitalsService",
+            ["$baseService"],
+            TMX.services.hospitalsFactory);
+
+        TMX.page.hospitalsControllerFactory = function ($scope, $baseController, $hospitalsService) {
+
+            var vm = this;
+
+            $baseController.merge(vm, $baseController);
+
+            vm.$hospitalsService = $hospitalsService;
+            vm.$scope = $scope;
+
+            vm.onGetListSuccess = _onGetListSuccess;
+            vm.onDeleteHospital = _onDeleteHospital;
+            vm.onDeleteSuccess = _onDeleteSuccess;
+            vm.onError = _onError;
+
+            vm.hospitals = null;
+            vm.deletedHospital = null;
+
+            vm.notify = vm.$hospitalsService.getNotifier($scope);
+
+            render();
+
+            function render() {
+                vm.$hospitalsService.getHospitalList(vm.onGetListSuccess, vm.onError);
+            };
+
+            function _onGetListSuccess(data) {
+                vm.notify(function () {
+                    vm.hospitals = data.Items;
+                    console.log(vm.hospitals);
+                });
+            }
+
+            function _onDeleteHospital(hospital) {
+                if(confirm("Are you sure you want to delete this hospital?") == true){
+                vm.$hospitalsService.deleteHospital(hospital.Id, vm.onDeleteSuccess, vm.onError);
+                vm.deletedHospital = hospital;
+                } else {
+                    console.log("Cancelled");
+                }
+            }
+
+            function _onDeleteSuccess() {
+                console.log("Deleting Hospital");
+                vm.notify(function () {
+                    var index = vm.hospitals.indexOf(vm.deletedHospital);
+                    if (index > -1) {
+                        vm.hospitals.splice(index, 1);
+                    }
+                });
+                alert("Hospital deleted!");
+            }
+
+            function _onError(jqXHR, textStatus, errorThrown) {
+                vm.error = "An error has occurred!";
+                console.log(vm.error);
+                window.alert(vm.error);
+            }
+        }
+
+        TMX.ng.addController(TMX.ng.app.module,
+                "hospitalsController",
+                ['$scope', '$baseController', "$hospitalsService"],
+                TMX.page.hospitalsControllerFactory);
+    </script>
+}

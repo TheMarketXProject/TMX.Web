@@ -1,0 +1,430 @@
+﻿﻿@model TMX.Web.Models.ViewModels.ItemViewModel<int>
+@{
+    ViewBag.Title = "Obstetrical Patient";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Obstetrical Patient Case</h2>
+<div data-ng-controller="obstetricsController as obstetrics" id="obstetricsCtrl">
+    <div id="formContainer" class="block push-bit form-horizontal form-bordered form-control-borderless">
+        <form class="form-horizontal form-bordered form-control-borderless" id="obForm" name="obstetrics.obForm" ng-submit="obstetrics.onSubmitForm()" novalidate>
+            <input type="text" class="hidden" id="caseId" name="Id" ng-model="obstetrics.caseData.Id" value="@Model.Item" form-autofill-fix>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Patient ID
+                    <div class="input-group">
+                        <input type="text"
+                               placeholder=""
+                               style="width: 150px;"
+                               id="patientId"
+                               name="PatientID"
+                               ng-model="obstetrics.caseData.PatientID"
+                               class="form-control ng-class:{'has-error': obstetrics.obForm.PatientId.$touched && !obstetrics.obForm.PatientId.$valid}"
+                               ng-minlength="5"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.PatientID.$error.required">Please enter patient ID</span>
+                            <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.PatientID.$error.minlength">Patient ID is required to be at least 5 characters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Age
+                    <div class="input-group">
+                        <input type="number"
+                               placeholder=""
+                               style="width: 75px;"
+                               id="age"
+                               name="Age"
+                               ng-model="obstetrics.caseData.Age"
+                               class="form-control ng-class:{'error': obstetrics.showFormErrors && !obstetrics.obForm.Age.$valid}"
+                               min="13" max="89"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.Age.$error.required">Please enter patient's age</span>
+                            <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.Age.$error.min || obstetrics.obForm.Age.$error.max">Not a valid age</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Gravity
+                    <div class="input-group">
+                        <input type="number"
+                               placeholder=""
+                               style="width: 75px;"
+                               id="gravity"
+                               name="Gravity"
+                               ng-model="obstetrics.caseData.Gravity"
+                               class="form-control ng-class:{'error': obstetrics.showFormErrors && !obstetrics.obForm.Gravity.$valid}"
+                               min="1"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.Gravity.$error.required">Please enter gravity</span>
+                            <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.Gravity.$error.min">Patient must have at least 1 pregnancy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Parity
+                    <div class="input-group">
+                        <input type="number"
+                               placeholder=""
+                               style="width: 75px;"
+                               id="parity"
+                               name="Parity"
+                               ng-model="obstetrics.caseData.Parity"
+                               class="form-control ng-class:{'error': obstetrics.showFormErrors && !obstetrics.obForm.Parity.$valid}"
+                               min="0"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.Parity.$error.required">Enter valid # of term deliveries</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Complications
+                    <div class="input-group">
+                        Antepartum
+                        <select class="form-control" id="antepartum" name="AntepartumID" ng-model="obstetrics.caseData.AntepartumID" required form-autofill-fix>
+                            <option value="">Choose Category</option>
+                            <option ng-repeat="category in obstetrics.categories" name="Hospital" value="{{category.Id}}">{{category.Category}}</option>
+                        </select>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.AntepartumID.$error.required">Please enter category</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        Delivery/Postpartum
+                        <select class="form-control" id="postpartum" name="PostpartumID" ng-model="obstetrics.caseData.PostpartumID" required form-autofill-fix>
+                            <option value="">Choose Category</option>
+                            <option ng-repeat="category in obstetrics.categories" name="Hospital" value="{{category.Id}}">{{category.Category}}</option>
+                        </select>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.PostpartumID.$error.required">Please enter category</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Operative Procedures And/Or Treatment
+                    <div class="input-group">
+                        <input type="text"
+                               placeholder=""
+                               id="treatment"
+                               name="Treatment"
+                               ng-model="obstetrics.caseData.Treatment"
+                               class="form-control ng-class:{'error': obstetrics.showFormErrors && !obstetrics.obForm.Treatment.$valid}"
+                               ng-minlength="5"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.Treatment.$error.required">Please enter treatment</span>
+                            <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.Treatment.$error.minlength">Please enter at least 5 characters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <div class="input-group">
+                        Birth Weight<br>
+                        <div class="left">
+                            <input type="number"
+                                   style="width: 80px;"
+                                   id="birthWeight"
+                                   name="BirthWeight"
+                                   ng-model="obstetrics.caseData.BirthWeight"
+                                   class="form-control ng-class:{'error': obstetrics.showFormErrors && !obstetrics.obForm.BirthWeight.$valid}"
+                                   min="500" max="6000"
+                                   required
+                                   form-autofill-fix> grams
+                        </div>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.BirthWeight.$error.required">Please enter baby's birthweight</span>
+                            <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.BirthWeight.$error.min || obstetrics.obForm.BirthWeight.$error.max">Please enter valid weight</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <div class="input-group">
+                        <div class="ng-class:{'error': obstetrics.showFormErrors && !obstetrics.obForm.Death.$valid}">
+                            Perinatal Death?
+                            <input type="radio" name="Death" id="death" ng-model="obstetrics.caseData.Death" value="Yes" ng-required="!obstetrics.caseData.Death" form-autofill-fix> Yes
+                            <input type="radio" name="Death" id="death" ng-model="obstetrics.caseData.Death" value="No" ng-required="!obstetrics.caseData.Death" form-autofill-fix> No
+                            <div role="alert" class="help-inline error" style="color:red">
+                                <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.Death.$error.required">Please enter answer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <div class="form-bordered">
+                        APGAR Score<br>
+                        <div class="ng-class:{'error': obstetrics.showFormErrors && !obstetrics.obForm.OneMinScore.$valid}">
+                            After 1 min
+                            <input type="radio" name="OneMinScore" id="oneMinScore" ng-model="obstetrics.caseData.OneMinScore" value="1" ng-required="!obstetrics.caseData.OneMinScore"> 1
+                            <input type="radio" name="OneMinScore" id="oneMinScore" ng-model="obstetrics.caseData.OneMinScore" value="2" ng-required="!obstetrics.caseData.OneMinScore"> 2
+                            <input type="radio" name="OneMinScore" id="oneMinScore" ng-model="obstetrics.caseData.OneMinScore" value="3" ng-required="!obstetrics.caseData.OneMinScore"> 3
+                            <input type="radio" name="OneMinScore" id="oneMinScore" ng-model="obstetrics.caseData.OneMinScore" value="4" ng-required="!obstetrics.caseData.OneMinScore"> 4
+                            <input type="radio" name="OneMinScore" id="oneMinScore" ng-model="obstetrics.caseData.OneMinScore" value="5" ng-required="!obstetrics.caseData.OneMinScore"> 5
+                            <input type="radio" name="OneMinScore" id="oneMinScore" ng-model="obstetrics.caseData.OneMinScore" value="6" ng-required="!obstetrics.caseData.OneMinScore"> 6
+                            <input type="radio" name="OneMinScore" id="oneMinScore" ng-model="obstetrics.caseData.OneMinScore" value="7" ng-required="!obstetrics.caseData.OneMinScore"> 7
+                            <input type="radio" name="OneMinScore" id="oneMinScore" ng-model="obstetrics.caseData.OneMinScore" value="8" ng-required="!obstetrics.caseData.OneMinScore"> 8
+                            <input type="radio" name="OneMinScore" id="oneMinScore" ng-model="obstetrics.caseData.OneMinScore" value="9" ng-required="!obstetrics.caseData.OneMinScore"> 9
+                            <input type="radio" name="OneMinScore" id="oneMinScore" ng-model="obstetrics.caseData.OneMinScore" value="10" ng-required="!obstetrics.caseData.OneMinScore"> 10
+                            <div role="alert" class="help-inline error" style="color:red">
+                                <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.OneMinScore.$error.required">Please enter score</span>
+                            </div>
+                        </div>
+                        <div class="ng-class:{'error': obstetrics.showFormErrors && !obstetrics.obForm.FiveMinScore.$valid}">
+                            After 5 min
+                            <input type="radio" name="FiveMinScore" id="fiveMinScore" ng-model="obstetrics.caseData.FiveMinScore" value="1" ng-required="!obstetrics.caseData.FiveMinScore"> 1
+                            <input type="radio" name="FiveMinScore" id="fiveMinScore" ng-model="obstetrics.caseData.FiveMinScore" value="2" ng-required="!obstetrics.caseData.FiveMinScore"> 2
+                            <input type="radio" name="FiveMinScore" id="fiveMinScore" ng-model="obstetrics.caseData.FiveMinScore" value="3" ng-required="!obstetrics.caseData.FiveMinScore"> 3
+                            <input type="radio" name="FiveMinScore" id="fiveMinScore" ng-model="obstetrics.caseData.FiveMinScore" value="4" ng-required="!obstetrics.caseData.FiveMinScore"> 4
+                            <input type="radio" name="FiveMinScore" id="fiveMinScore" ng-model="obstetrics.caseData.FiveMinScore" value="5" ng-required="!obstetrics.caseData.FiveMinScore"> 5
+                            <input type="radio" name="FiveMinScore" id="fiveMinScore" ng-model="obstetrics.caseData.FiveMinScore" value="6" ng-required="!obstetrics.caseData.FiveMinScore"> 6
+                            <input type="radio" name="FiveMinScore" id="fiveMinScore" ng-model="obstetrics.caseData.FiveMinScore" value="7" ng-required="!obstetrics.caseData.FiveMinScore"> 7
+                            <input type="radio" name="FiveMinScore" id="fiveMinScore" ng-model="obstetrics.caseData.FiveMinScore" value="8" ng-required="!obstetrics.caseData.FiveMinScore"> 8
+                            <input type="radio" name="FiveMinScore" id="fiveMinScore" ng-model="obstetrics.caseData.FiveMinScore" value="9" ng-required="!obstetrics.caseData.FiveMinScore"> 9
+                            <input type="radio" name="FiveMinScore" id="fiveMinScore" ng-model="obstetrics.caseData.FiveMinScore" value="10" ng-required="!obstetrics.caseData.FiveMinScore"> 10
+                            <div role="alert" class="help-inline error" style="color:red">
+                                <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.FiveMinScore.$error.required">Please enter score</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <div class="input-group ng-class:{'error': obstetrics.showFormErrors && !obstetrics.obForm.HospitalId.$valid}">
+                        Hospital<br>
+                        <select ui-select2 class="form-control" id="hospital" name="HospitalId" data-placeholder="Pick a hospital" ng-model="obstetrics.caseData.HospitalID" required form-autofill-fix>
+                            <option value="">Choose Hospital</option>
+                            <option ng-repeat="hospital in obstetrics.hospitals" name="Hospital" value="{{hospital.Id}}">{{hospital.Name}}</option>
+                        </select>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.HospitalId.$error.required">Please enter hospital</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <div class="input-group">
+                        Days in hospital<br>
+                        <input type="number"
+                               style="width: 80px;"
+                               id="daysInHospital"
+                               name="DaysInHospital"
+                               ng-model="obstetrics.caseData.DaysInHospital"
+                               class="form-control ng-class:{'error': obstetrics.showFormErrors && !obstetrics.obForm.DaysInHospital.$valid}"
+                               min="0"
+                               required
+                               form-autofill-fix> days
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.DaysInHospital.$error.required">Please enter length of days in hospital</span>
+                            <span class="error" ng-show="obstetrics.showFormErrors && obstetrics.obForm.DaysInHospital.$error.number">Please enter valid numbers</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6 text-left">
+                    <button type="submit" id="cmdSubmit" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Submit Case</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Scripts/TMX.services.obstetrics.js"></script>
+    <script src="~/Scripts/TMX.services.hospitals.js"></script>
+    <script src="~/Scripts/TMX.services.categories.js"></script>
+    <script type="text/javascript">
+
+        TMX.page.startUp = function () {
+            TMX.page.userController = TMX.ng.getControllerInstance($("#obstetricsCtrl"));
+        }
+
+        TMX.services.obstetricsFactory = function ($baseService) {
+            var aTMXServiceObject = TMX.services.obstetrics;
+            var newService = $baseService.merge(true, {}, aTMXServiceObject, $baseService);
+            return newService;
+        }
+
+        TMX.services.hospitalsFactory = function ($baseService) {
+            var aTMXServiceObject = TMX.services.hospitals;
+            var newService = $baseService.merge(true, {}, aTMXServiceObject, $baseService);
+            return newService;
+        }
+        TMX.services.categoriesFactory = function ($baseService) {
+            var aTMXServiceObject = TMX.services.categories;
+            var newService = $baseService.merge(true, {}, aTMXServiceObject, $baseService);
+            return newService;
+        }
+
+        TMX.ng.addService(TMX.ng.app.module,
+            "$obstetricsService",
+            ["$baseService"],
+            TMX.services.obstetricsFactory);
+
+        TMX.ng.addService(TMX.ng.app.module,
+            "$hospitalsService",
+            ["$baseService"],
+            TMX.services.hospitalsFactory);
+
+        TMX.ng.addService(TMX.ng.app.module,
+            "$categoriesService",
+            ["$baseService"],
+            TMX.services.categoriesFactory);
+
+        TMX.page.obstetricsControllerFactory = function ($scope, $baseController, $obstetricsService, $hospitalsService, $categoriesService) {
+
+            var vm = this;
+
+            $baseController.merge(vm, $baseController);
+
+            vm.$obstetricsService = $obstetricsService;
+            vm.$hospitalsService = $hospitalsService;
+            vm.$categoriesService = $categoriesService;
+            vm.$scope = $scope;
+
+            //PUBLIC METHODS
+            vm.onSubmitForm = _onSubmitForm;
+            vm.getForm = _getForm;
+
+            //PUBLIC HANDLERS
+            vm.onCreateSuccess = _onCreateSuccess;
+            vm.onGetSuccess = _onGetSuccess;
+            vm.onGetHospitalSuccess = _onGetHospitalSuccess;
+            vm.onCategoriesSuccess = _onCategoriesSuccess;
+            vm.onError = _onError;
+
+            //PUBLIC MEMBERS
+            vm.caseData = null;
+            vm.showFormErrors = false;
+            vm.hospitals = null;
+            vm.alert = {
+                saved: "Case saved!",
+                updated: "Case updated!",
+                error: "An error has occurred!"
+            };
+
+            vm.notify = vm.$obstetricsService.getNotifier($scope);
+
+            render();
+
+            function render() {
+                vm.showFormErrors = false;
+                vm.$hospitalsService.getHospitalList(vm.onGetHospitalSuccess, vm.onError);
+                vm.$categoriesService.getObCategoryList(vm.onCategoriesSuccess, vm.onError);
+                vm.getForm();
+            };
+
+            function _onSubmitForm() {
+                console.log("validating");
+                vm.showFormErrors = true;
+
+                if (vm.obForm.$valid) {
+                    console.log("form is valid");
+                    console.log(vm.caseData);
+                    var caseId = @Model.Item;
+                    if (caseId > 0) {
+                        vm.$obstetricsService.updateObCase(caseId, vm.caseData, vm.onCreateSuccess, vm.onError);
+                    } else {
+                        vm.$obstetricsService.createObCase(vm.caseData, vm.onCreateSuccess, vm.onError);
+                        $("#cmdSubmit").html("Update Case");
+                    }
+                } else {
+                    console.log("form is not valid");
+                }
+            }
+
+            function _getForm() {
+                var caseId = @Model.Item;
+                vm.$obstetricsService.getObCase(caseId, vm.onGetSuccess, vm.onError);
+            }
+
+            function _onGetSuccess(data) {
+
+                if (data && data.Item) {
+                    vm.notify(function () {
+                        vm.caseData = data.Item;
+                    });
+                    $("#hospital").val(data.Item.Hospital.Id).trigger('change');
+                    $("#antepartum").val(data.Item.Antepartum.Id).trigger('change');
+                    $("#postpartum").val(data.Item.Postpartum.Id).trigger('change');
+                    $("#cmdSubmit").html("Update Case");
+                    console.log(vm.caseData);
+                }
+            }
+
+            function _onGetHospitalSuccess(data) {
+                vm.notify(function () {
+                    vm.hospitals = data.Items;
+                    console.log('HOSPITALS: ', vm.hospitals);
+                });
+            }
+
+            function _onCategoriesSuccess(data){
+                vm.notify(function () {
+                    vm.categories = data.Items;
+                    console.log('CATEGORIES: ', vm.categories);
+                });
+            }
+
+            function _onCreateSuccess(data, status, xhr) {
+                console.log(vm.alert.saved);
+                window.alert(vm.alert.saved);
+                location.href = 'http://TMX.dev/obcases';
+            }
+
+            function _onError(jqXHR, textStatus, errorThrown) {
+                console.log(vm.alert.error);
+                window.alert(vm.alert.error);
+            }
+
+            TMX.ng.app.module.directive('formAutofillFix', function () {
+                return function (scope, elem, attrs) {
+                    // Fixes Chrome bug: https://groups.google.com/forum/#!topic/angular/6NlucSskQjY
+                    elem.prop('method', 'POST');
+
+                    // Fix autofill issues where Angular doesn't know about autofilled inputs
+                    if (attrs.ngSubmit) {
+                        setTimeout(function () {
+                            elem.unbind('submit').submit(function (e) {
+                                e.preventDefault();
+                                elem.find('input, textarea, select').trigger('input').trigger('change').trigger('keydown');
+                                scope.$apply(attrs.ngSubmit);
+                            });
+                        }, 0);
+                    }
+                };
+            });
+        }
+
+        TMX.ng.addController(TMX.ng.app.module,
+            "obstetricsController",
+            ['$scope', '$baseController', "$obstetricsService", "$hospitalsService", "$categoriesService"],
+            TMX.page.obstetricsControllerFactory);
+
+
+    </script>
+}

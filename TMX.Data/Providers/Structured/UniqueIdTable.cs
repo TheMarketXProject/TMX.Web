@@ -6,48 +6,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sabio.Data
+namespace TMX.Data.Providers.Structured
 {
-    public class UniqueIdTable : IEnumerable<SqlDataRecord>
+  public class UniqueIdTable : IEnumerable<SqlDataRecord>
+  {
+
+    private IEnumerable<Guid> _items;
+
+    public UniqueIdTable(IEnumerable<Guid> items)
     {
 
-        private IEnumerable<Guid> _items;
-
-        public UniqueIdTable(IEnumerable<Guid> items)
-        {
-
-            _items = items;
-        }
-
-        private static SqlDataRecord GetRecord()
-        {
-            return new SqlDataRecord(
-                    new SqlMetaData[] { new SqlMetaData("Data", SqlDbType.UniqueIdentifier) }
-               );
-        }      
-
-        public IEnumerator<SqlDataRecord> GetEnumerator()
-        {
-            if (_items != null)
-            {
-                foreach (Guid item in _items)
-                {
-
-                    var rec = GetRecord();
-
-                    rec.SetGuid(0, item);
-
-                    yield return rec;
-                }
-
-            }
-
-            yield break;
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+      _items = items;
     }
+
+    private static SqlDataRecord GetRecord()
+    {
+      return new SqlDataRecord(
+              new SqlMetaData[] { new SqlMetaData("Data", SqlDbType.UniqueIdentifier) }
+         );
+    }
+
+    public IEnumerator<SqlDataRecord> GetEnumerator()
+    {
+      if (_items != null)
+      {
+        foreach (Guid item in _items)
+        {
+
+          var rec = GetRecord();
+
+          rec.SetGuid(0, item);
+
+          yield return rec;
+        }
+
+      }
+
+      yield break;
+    }
+
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    {
+      return GetEnumerator();
+    }
+  }
 }

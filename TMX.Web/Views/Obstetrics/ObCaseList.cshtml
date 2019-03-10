@@ -1,0 +1,143 @@
+﻿
+@{
+    ViewBag.Title = "Obstetrical Cases";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<header class="content">
+    <h2>Obstetrical Cases</h2>
+    <p>@Html.ActionLink("Create New Case", "Questions")</p>
+</header>
+
+<div class="container">
+    <div data-ng-controller="obstetricsController as dashboard">
+        <div class="row">
+            <table>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Age</th>
+                    <th>Gravity</th>
+                    <th>Parity</th>
+                    <th>Antepartum</th>
+                    <th>Delivery/Postpartum</th>
+                    <th>Operative Procedures and/or Treatment</th>
+                    <th>Birth Weight</th>
+                    <th>Perinatal Death</th>
+                    <th>APGAR Score (After 1 min)</th>
+                    <th>APGAR Score (After 5 mins)</th>
+                    <th>Hospital</th>
+                    <th>Days In Hospital</th>
+                    <th>Date Added</th>
+                    <th>Date Modified</th>
+                </tr>
+                <tr data-ng-repeat="obCase in dashboard.obCases">
+                    <td>{{obCase.PatientID}}</td>
+                    <td>{{obCase.Age}}</td>
+                    <td>{{obCase.Gravity}}</td>
+                    <td>{{obCase.Parity}}</td>
+                    <td>{{obCase.Antepartum.Category}}</td>
+                    <td>{{obCase.Postpartum.Category}}</td>
+                    <td>{{obCase.Treatment}}</td>
+                    <td>{{obCase.BirthWeight}}</td>
+                    <td>{{obCase.Death}}</td>
+                    <td>{{obCase.OneMinScore}}</td>
+                    <td>{{obCase.FiveMinScore}}</td>
+                    <td>{{obCase.Hospital.Name}}</td>
+                    <td>{{obCase.DaysInHospital}}</td>
+                    <td>{{obCase.DateAdded | date: "M/d/yyyy"}}</td>
+                    <td>{{obCase.DateModified | date: "M/d/yyyy"}}</td>
+                    <td><a ng-href="http://TMX.dev/obcases/{{obCase.Id}}" title="Edit">Edit</a></td>
+                    <td><a ng-href="javascript:void(0)" title="Delete" ng-click="dashboard.onDeleteObCase(obCase)">Delete</a></td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+    <script src="~/Scripts/TMX.services.obstetrics.js"></script>
+    <script type="text/javascript">
+
+        TMX.page.startUp = function () {
+            TMX.page.userController = TMX.ng.getControllerInstance($("#obstetricsCtrl"));
+        }
+
+        TMX.services.obstetricsFactory = function ($baseService) {
+            var aTMXServiceObject = TMX.services.obstetrics;
+            var newService = $baseService.merge(true, {}, aTMXServiceObject, $baseService);
+            return newService;
+        }
+
+        TMX.ng.addService(TMX.ng.app.module,
+            "$obstetricsService",
+            ["$baseService"],
+            TMX.services.obstetricsFactory);
+
+        TMX.page.obstetricsControllerFactory = function ($scope, $baseController, $obstetricsService) {
+
+            var vm = this;
+
+            $baseController.merge(vm, $baseController);
+
+            vm.$obstetricsService = $obstetricsService;
+            vm.$scope = $scope;
+
+            //PUBLIC HANDLERS
+            vm.onGetListSuccess = _onGetListSuccess;
+            vm.onDeleteObCase = _onDeleteObCase;
+            vm.onDeleteSuccess = _onDeleteSuccess;
+            vm.onError = _onError;
+
+            //PUBLIC MEMBERS
+            vm.obCases = null;
+            vm.deletedObCase = null;
+
+            vm.notify = vm.$obstetricsService.getNotifier($scope);
+
+            render();
+
+            function render() {
+                vm.$obstetricsService.getObCaseList(vm.onGetListSuccess, vm.onError);
+            };
+
+            function _onGetListSuccess(data) {
+                vm.notify(function () {
+                    vm.obCases = data.Items;
+                    console.log(vm.obCases);
+                });
+            }
+
+            function _onDeleteObCase(obCase) {
+                if (confirm("Are you sure you want to delete this case?") == true) {
+                    vm.$obstetricsService.deleteObCase(obCase.Id, vm.onDeleteSuccess, vm.onError);
+                    vm.deletedObCase = obCase;
+                } else {
+                    console.log("Cancelled");
+                }
+            }
+
+            function _onDeleteSuccess() {
+                console.log("Deleting Case");
+                vm.notify(function () {
+                    var index = vm.obCases.indexOf(vm.deletedObCase);
+                    if (index > -1) {
+                        vm.obCases.splice(index, 1);
+                    }
+                });
+                alert("Case deleted!");
+            }
+
+            function _onError(jqXHR, textStatus, errorThrown) {
+                vm.error = "An error has occurred!";
+                console.log(vm.error);
+                window.alert(vm.error);
+            }
+        }
+
+        TMX.ng.addController(TMX.ng.app.module,
+                "obstetricsController",
+                ['$scope', '$baseController', "$obstetricsService"],
+                TMX.page.obstetricsControllerFactory);
+    </script>
+}

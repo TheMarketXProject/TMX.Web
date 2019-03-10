@@ -1,0 +1,395 @@
+﻿@model TMX.Web.Models.ViewModels.ItemViewModel<int>
+
+@{
+    ViewBag.Title = "Office Practice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Office Practice Case</h2>
+
+<div data-ng-controller="officeController as office" id="officeCtrl">
+    <div id="formContainer" class="block push-bit form-horizontal form-bordered form-control-borderless">
+        <form class="form-horizontal form-bordered form-control-borderless" id="officeForm" name="office.officeForm" ng-submit="office.onSubmitForm()" novalidate>
+            <input type="text" class="hidden" id="caseId" name="Id" ng-model="office.caseData.Id" value="@Model.Item" form-autofill-fix>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Patient ID
+                    <div class="input-group">
+                        <input type="text"
+                               placeholder=""
+                               style="width: 150px;"
+                               id="patientId"
+                               name="PatientID"
+                               ng-model="office.caseData.PatientID"
+                               class="form-control ng-class:{'has-error': office.officeForm.PatientId.$touched && !office.officeForm.PatientId.$valid}"
+                               ng-minlength="5"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="office.showFormErrors && office.officeForm.PatientId.$error.required">Please enter patient ID</span>
+                            <span class="error" ng-show="office.showFormErrors && office.officeForm.PatientId.$error.minlength">Patient ID is required to be at least 5 characters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Age
+                    <div class="input-group">
+                        <input type="number"
+                               placeholder=""
+                               style="width: 75px;"
+                               id="age"
+                               name="Age"
+                               ng-model="office.caseData.Age"
+                               class="form-control ng-class:{'error': office.showFormErrors && !office.officeForm.Age.$valid}"
+                               min="13" max="89"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="office.showFormErrors && office.officeForm.Age.$error.required">Please enter patient's age</span>
+                            <span class="error" ng-show="office.showFormErrors && office.officeForm.Age.$error.min || office.officeForm.Age.$error.max">Not a valid age</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Gravity
+                    <div class="input-group">
+                        <input type="number"
+                               placeholder=""
+                               style="width: 75px;"
+                               id="gravity"
+                               name="Gravity"
+                               ng-model="office.caseData.Gravity"
+                               class="form-control ng-class:{'error': office.showFormErrors && !office.officeForm.Gravity.$valid}"
+                               min="1"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="office.showFormErrors && office.officeForm.Gravity.$error.required">Please enter gravity</span>
+                            <span class="error" ng-show="office.showFormErrors && office.officeForm.Gravity.$error.min">Patient must have at least 1 pregnancy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Parity
+                    <div class="input-group">
+                        <input type="number"
+                               placeholder=""
+                               style="width: 75px;"
+                               id="parity"
+                               name="Parity"
+                               ng-model="office.caseData.Parity"
+                               class="form-control ng-class:{'error': office.showFormErrors && !office.officeForm.Parity.$valid}"
+                               min="0"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="office.showFormErrors && office.officeForm.Parity.$error.required">Enter valid # of term deliveries</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Visits
+                    <div class="input-group">
+                        <input type="number"
+                               placeholder=""
+                               style="width: 75px;"
+                               id="visits"
+                               name="Visits"
+                               ng-model="office.caseData.Visits"
+                               class="form-control ng-class:{'error': office.showFormErrors && !office.officeForm.Visits.$valid}"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="office.showFormErrors && office.officeForm.Visits.$error.required">Please enter admission</span>
+                            <span class="error" ng-show="office.showFormErrors && office.officeForm.Visits.$error.minlength">Please enter at least 5 characters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Problem
+                    <div class="input-group">
+                        <input type="text"
+                               placeholder=""
+                               id="problem"
+                               name="problem"
+                               ng-model="office.caseData.Problem"
+                               class="form-control ng-class:{'error': office.showFormErrors && !office.officeForm.problem.$valid}"
+                               ng-minlength="5"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="office.showFormErrors && office.officeForm.problem.$error.required">Please enter problem</span>
+                            <span class="error" ng-show="office.showFormErrors && office.officeForm.problem.$error.minlength">Please enter at least 5 characters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Diagnostic Procedures
+                    <div class="input-group">
+                        <input type="text"
+                               placeholder=""
+                               id="diagnosticProc"
+                               name="diagnosticProc"
+                               ng-model="office.caseData.DiagnosticProc"
+                               class="form-control ng-class:{'error': office.showFormErrors && !office.officeForm.diagnosticProc.$valid}"
+                               ng-minlength="5"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="office.showFormErrors && office.officeForm.diagnosticProc.$error.required">Please enter diagnosticProc</span>
+                            <span class="error" ng-show="office.showFormErrors && office.officeForm.diagnosticProc.$error.minlength">Please enter at least 5 characters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <div class="input-group ng-class:{'error': office.showFormErrors && !office.officeForm.hospitalId.$valid}">
+                        Complications<br>
+                        <select class="form-control" id="complication" name="ComplicationID" ng-model="office.caseData.ComplicationID" required form-autofill-fix>
+                            <option value=""></option>
+                            <option ng-repeat="category in office.categories" name="category" value="{{category.Id}}">{{category.Category}}</option>
+                        </select>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="office.showFormErrors && office.officeForm.ComplicationID.$error.required">Please enter category</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Treatment
+                    <div class="input-group">
+                        <input type="text"
+                               placeholder=""
+                               id="treatment"
+                               name="treatment"
+                               ng-model="office.caseData.Treatment"
+                               class="form-control ng-class:{'error': office.showFormErrors && !office.officeForm.treatment.$valid}"
+                               ng-minlength="5"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="office.showFormErrors && office.officeForm.treatment.$error.required">Please enter treatment</span>
+                            <span class="error" ng-show="office.showFormErrors && office.officeForm.treatment.$error.minlength">Please enter at least 5 characters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Result
+                    <div class="input-group">
+                        <input type="text"
+                               placeholder=""
+                               id="result"
+                               name="Result"
+                               ng-model="office.caseData.Result"
+                               class="form-control ng-class:{'error': office.showFormErrors && !office.officeForm.Result.$valid}"
+                               ng-minlength="5"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="office.showFormErrors && office.officeForm.Result.$error.required">Please enter pathology</span>
+                            <span class="error" ng-show="office.showFormErrors && office.officeForm.Result.$error.minlength">Please enter at least 5 characters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6 text-left">
+                    <button type="submit" id="cmdSubmit" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Submit Case</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/TMX.services.officePractice.js"></script>
+    <script src="~/Scripts/TMX.services.hospitals.js"></script>
+    <script src="~/Scripts/TMX.services.categories.js"></script>
+    <script type="text/javascript">
+
+        TMX.page.startUp = function () {
+            TMX.page.userController = TMX.ng.getControllerInstance($("#officeCtrl"));
+        }
+
+        TMX.services.officeFactory = function ($baseService) {
+            var aTMXServiceObject = TMX.services.officePractice;
+            var newService = $baseService.merge(true, {}, aTMXServiceObject, $baseService);
+            return newService;
+        }
+
+        TMX.services.hospitalsFactory = function ($baseService) {
+            var aTMXServiceObject = TMX.services.hospitals;
+            var newService = $baseService.merge(true, {}, aTMXServiceObject, $baseService);
+            return newService;
+        }
+        TMX.services.categoriesFactory = function ($baseService) {
+            var aTMXServiceObject = TMX.services.categories;
+            var newService = $baseService.merge(true, {}, aTMXServiceObject, $baseService);
+            return newService;
+        }
+
+        TMX.ng.addService(TMX.ng.app.module,
+            "$officeService",
+            ["$baseService"],
+            TMX.services.officeFactory);
+
+        TMX.ng.addService(TMX.ng.app.module,
+            "$hospitalsService",
+            ["$baseService"],
+            TMX.services.hospitalsFactory);
+
+        TMX.ng.addService(TMX.ng.app.module,
+            "$categoriesService",
+            ["$baseService"],
+            TMX.services.categoriesFactory);
+
+        TMX.page.officeControllerFactory = function ($scope, $baseController, $officeService, $hospitalsService, $categoriesService) {
+
+            var vm = this;
+
+            $baseController.merge(vm, $baseController);
+
+            vm.$officeService = $officeService;
+            vm.$hospitalsService = $hospitalsService;
+            vm.$categoriesService = $categoriesService;
+            vm.$scope = $scope;
+
+            vm.onSubmitForm = _onSubmitForm;
+            vm.getForm = _getForm;
+
+            vm.onCreateSuccess = _onCreateSuccess;
+            vm.onGetSuccess = _onGetSuccess;
+            vm.onGetHospitalSuccess = _onGetHospitalSuccess;
+            vm.onCategoriesSuccess = _onCategoriesSuccess;
+            vm.onError = _onError;
+
+            vm.caseData = null;
+            vm.showFormErrors = false;
+            vm.hospitals = null;
+            vm.alert = {
+                saved: "Case saved!",
+                updated: "Case updated!",
+                error: "An error has occurred!"
+            };
+
+            vm.notify = vm.$officeService.getNotifier($scope);
+
+            render();
+
+            function render() {
+                vm.showFormErrors = false;
+                vm.$hospitalsService.getHospitalList(vm.onGetHospitalSuccess, vm.onError);
+                vm.$categoriesService.getOfficeCategoryList(vm.onCategoriesSuccess, vm.onError);
+                if (@Model.Item > 0) vm.getForm();
+            };
+
+            function _onSubmitForm() {
+                console.log("validating");
+                vm.showFormErrors = true;
+
+                if (vm.officeForm.$valid) {
+                    console.log("form is valid");
+                    console.log(vm.caseData);
+                    var caseId = @Model.Item;
+                    if (caseId > 0) {
+                        vm.$officeService.updateOfficePracticeCase(caseId, vm.caseData, vm.onCreateSuccess, vm.onError);
+                    } else {
+                        vm.$officeService.createOfficePracticeCase(vm.caseData, vm.onCreateSuccess, vm.onError);
+                        $("#cmdSubmit").html("Update Case");
+                    }
+                } else {
+                    console.log("form is not valid");
+                }
+            }
+
+            function _getForm() {
+                vm.$officeService.getOfficePracticeCase(@Model.Item, vm.onGetSuccess, vm.onError);
+            }
+
+            //PRIVATE HANDLERS///////////////////////////////////////////////////////
+            function _onGetSuccess(data) {
+
+                if (data && data.Item) {
+                    vm.notify(function () {
+                        vm.caseData = data.Item;
+                    });
+                    $("#hospital").val(data.Item.Hospital.Id).trigger('change');
+                    $("#complication").val(data.Item.Complication.Id).trigger('change');
+                    $("#cmdSubmit").html("Update Case");
+                    console.log(vm.caseData);
+                }
+            }
+
+            function _onGetHospitalSuccess(data) {
+                vm.notify(function () {
+                    vm.hospitals = data.Items;
+                    console.log('HOSPITALS: ', vm.hospitals);
+                });
+            }
+
+            function _onCategoriesSuccess(data){
+                vm.notify(function () {
+                    vm.categories = data.Items;
+                    console.log('CATEGORIES: ', vm.categories);
+                });
+            }
+
+            function _onCreateSuccess(data, status, xhr) {
+                console.log(vm.alert.saved);
+                window.alert(vm.alert.saved);
+                location.href = 'http://TMX.dev/officecases';
+            }
+
+            function _onError(jqXHR, textStatus, errorThrown) {
+                console.log(vm.alert.error);
+                window.alert(vm.alert.error);
+            }
+
+            TMX.ng.app.module.directive('formAutofillFix', function () {
+                return function (scope, elem, attrs) {
+                    // Fixes Chrome bug: https://groups.google.com/forum/#!topic/angular/6NlucSskQjY
+                    elem.prop('method', 'POST');
+
+                    // Fix autofill issues where Angular doesn't know about autofilled inputs
+                    if (attrs.ngSubmit) {
+                        setTimeout(function () {
+                            elem.unbind('submit').submit(function (e) {
+                                e.preventDefault();
+                                elem.find('input, textarea, select').trigger('input').trigger('change').trigger('keydown');
+                                scope.$apply(attrs.ngSubmit);
+                            });
+                        }, 0);
+                    }
+                };
+            });
+        }
+
+        TMX.ng.addController(TMX.ng.app.module,
+            "officeController",
+            ['$scope', '$baseController', "$officeService", "$hospitalsService", "$categoriesService"],
+            TMX.page.officeControllerFactory);
+
+
+    </script>
+
+}
+
+

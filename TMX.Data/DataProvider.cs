@@ -1,28 +1,29 @@
-﻿using Sabio.Data.Providers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TMX.Data.Interfaces;
+using TMX.Data.Providers;
 
-namespace Sabio.Data
+namespace TMX.Data
 {
-    public sealed class DataProvider
+  public sealed class DataProvider
+  {
+    private DataProvider() { }
+
+    public static IDao Instance
     {
-        private DataProvider() { }
-
-        public static IDao Instance
-        {
-            get
-            {
-                return SqlDao.Instance;
-            }
-        }
-
-        public static void ExecuteNonQuery(object getConnection, string v, Func<SqlParameterCollection, object> inputParamMapper, Func<SqlParameterCollection, object> returnParameters)
-        {
-            throw new NotImplementedException();
-        }
+      get
+      {
+        return SqlDao.Instance;
+      }
     }
+
+    public static void ExecuteNonQuery(object getConnection, string v, Func<SqlParameterCollection, object> inputParamMapper, Func<SqlParameterCollection, object> returnParameters)
+    {
+      throw new NotImplementedException();
+    }
+  }
 }

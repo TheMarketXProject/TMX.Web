@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewBag.Title = "Gynecological Cases";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<header class="content">
+    <h2>Gynecological Cases</h2>
+    <p>@Html.ActionLink("Create New Case", "Add")</p>
+</header>
+
+<div class="container">
+    <div data-ng-controller="gynController as dashboard">
+        <div class="row">
+            <table>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Age</th>
+                    <th>Gravity</th>
+                    <th>Parity</th>
+                    <th>Admission</th>
+                    <th>Treatment</th>
+                    <th>Surgical Pathology</th>
+                    <th>Complications</th>
+                    <th>Hospital</th>
+                    <th>Days In Hospital</th>
+                    <th>Date Added</th>
+                    <th>Date Modified</th>
+                </tr>
+                <tr data-ng-repeat="gynCase in dashboard.gynCases">
+                    <td>{{gynCase.PatientID}}</td>
+                    <td>{{gynCase.Age}}</td>
+                    <td>{{gynCase.Gravity}}</td>
+                    <td>{{gynCase.Parity}}</td>
+                    <td>{{gynCase.Admission}}</td>
+                    <td>{{gynCase.Treatment}}</td>
+                    <td>{{gynCase.SurgicalPath}}</td>
+                    <td>{{gynCase.Complication.Category}}</td>
+                    <td>{{gynCase.Hospital.Name}}</td>
+                    <td>{{gynCase.DaysInHospital}}</td>
+                    <td>{{gynCase.DateAdded | date: "M/d/yyyy"}}</td>
+                    <td>{{gynCase.DateModified | date: "M/d/yyyy"}}</td>
+                    <td><a ng-href="http://TMX.dev/gyncases/{{gynCase.Id}}" title="Edit">Edit</a></td>
+                    <td><a ng-href="javascript:void(0)" title="Delete" ng-click="dashboard.onDeleteGynCase(gynCase)">Delete</a></td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/TMX.services.gyn.js"></script>
+    <script type="text/javascript">
+
+        TMX.page.startUp = function () {
+            TMX.page.userController = TMX.ng.getControllerInstance($("#gynCtrl"));
+        }
+
+        TMX.services.gynFactory = function ($baseService) {
+            var aTMXServiceObject = TMX.services.gyn;
+            var newService = $baseService.merge(true, {}, aTMXServiceObject, $baseService);
+            return newService;
+        }
+
+        TMX.ng.addService(TMX.ng.app.module,
+            "$gynService",
+            ["$baseService"],
+            TMX.services.gynFactory);
+
+        TMX.page.gynControllerFactory = function ($scope, $baseController, $gynService) {
+
+            var vm = this;
+
+            $baseController.merge(vm, $baseController);
+
+            vm.$gynService = $gynService;
+            vm.$scope = $scope;
+
+            //PUBLIC HANDLERS
+            vm.onGetListSuccess = _onGetListSuccess;
+            vm.onDeleteGynCase = _onDeleteGynCase;
+            vm.onDeleteSuccess = _onDeleteSuccess;
+            vm.onError = _onError;
+
+            //PUBLIC MEMBERS
+            vm.gynCases = null;
+            vm.deletedGynCase = null;
+
+            vm.notify = vm.$gynService.getNotifier($scope);
+
+            render();
+
+            function render() {
+                vm.$gynService.getGynCaseList(vm.onGetListSuccess, vm.onError);
+            };
+
+            function _onGetListSuccess(data) {
+                vm.notify(function () {
+                    vm.gynCases = data.Items;
+                    console.log(vm.gynCases);
+                });
+            }
+
+            function _onDeleteGynCase(gynCase) {
+                if (confirm("Are you sure you want to delete this case?") == true) {
+                    vm.$gynService.deleteGynCase(gynCase.Id, vm.onDeleteSuccess, vm.onError);
+                    vm.deletedGynCase = gynCase;
+                } else {
+                    console.log("Cancelled");
+                }
+            }
+
+            function _onDeleteSuccess() {
+                console.log("Deleting Case");
+                vm.notify(function () {
+                    var index = vm.gynCases.indexOf(vm.deletedGynCase);
+                    if (index > -1) {
+                        vm.gynCases.splice(index, 1);
+                    }
+                });
+                alert("Case deleted!");
+            }
+
+            function _onError(jqXHR, textStatus, errorThrown) {
+                vm.error = "An error has occurred!";
+                console.log(vm.error);
+                window.alert(vm.error);
+            }
+        }
+
+        TMX.ng.addController(TMX.ng.app.module,
+                "gynController",
+                ['$scope', '$baseController', "$gynService"],
+                TMX.page.gynControllerFactory);
+    </script>
+}

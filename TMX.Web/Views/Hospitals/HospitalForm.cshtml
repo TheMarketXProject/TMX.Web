@@ -1,0 +1,573 @@
+﻿@model TMX.Web.Models.ViewModels.ItemViewModel<int>
+
+@{
+    ViewBag.Title = "HospitalForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<header class="content">
+    <h2>Hospital Info</h2>
+    <p><a ng-href="http://TMX.dev/Hospitals">Back to Hospitals</a></p>
+</header>
+
+
+<div data-ng-controller="hospitalsController as hospital" id="hospitalsCtrl">
+    <div id="formContainer" class="block push-bit form-horizontal form-bordered form-control-borderless">
+        <form class="form-horizontal form-bordered form-control-borderless" id="hospForm" name="hospital.hospForm" ng-if="hospital.editingForm" ng-submit="hospital.onSubmitForm()" novalidate>
+            <input type="text" class="hidden" id="hospId" name="Id" ng-model="hospital.newData.Id" value="@Model.Item" form-autofill-fix>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Name
+                    <div class="input-group">
+                        <input type="text"
+                               placeholder=""
+                               style="width: 150px;"
+                               id="name"
+                               name="name"
+                               ng-model="hospital.newData.Name"
+                               class="form-control ng-class:{'has-error': hospital.hospForm.name.$touched && !hospital.hospForm.name.$valid}"
+                               ng-minlength="5"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="hospital.showFormErrors && hospital.hospForm.name.$error.required">Please enter hospital name</span>
+                            <span class="error" ng-show="hospital.showFormErrors && hospital.hospForm.name.$error.minlength">Hospital name is required to be at least 5 characters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Abbrev.
+                    <div class="input-group">
+                        <input type="text"
+                               placeholder=""
+                               style="width: 150px;"
+                               id="abbrev"
+                               name="abbrev"
+                               ng-model="hospital.newData.Abbrev"
+                               class="form-control"
+                               ng-maxlength="5"
+                               form-autofill-fix>
+                        @*<div role="alert" class="help-inline error" style="color:red">
+                                <span class="error" ng-show="hospital.showFormErrors && hospital.hospForm.abbrev.$error.required">Please enter hospital name</span>
+                                <span class="error" ng-show="hospital.showFormErrors && hospital.hospForm.abbrev.$error.maxlength">Patient ID is required to be at least 5 characters</span>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Address
+                    <div class="input-group">
+                        <input type="text"
+                               placeholder=""
+                               style="width: 150px;"
+                               id="address"
+                               name="address"
+                               ng-model="hospital.newData.Address"
+                               class="form-control ng-class:{'has-error': hospital.hospForm.address.$touched && !hospital.hospForm.address.$valid}"
+                               ng-minlength="5"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="hospital.showFormErrors && hospital.hospForm.address.$error.required">Please enter hospital address</span>
+                            <span class="error" ng-show="hospital.showFormErrors && hospital.hospForm.address.$error.minlength">Address is required to be at least 5 characters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    City
+                    <div class="input-group">
+                        <input type="text"
+                               placeholder=""
+                               style="width: 150px;"
+                               id="city"
+                               name="city"
+                               ng-model="hospital.newData.City"
+                               class="form-control ng-class:{'has-error': hospital.hospForm.city.$touched && !hospital.hospForm.city.$valid}"
+                               ng-minlength="5"
+                               ng-maxlength="20"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="hospital.showFormErrors && hospital.hospForm.city.$error.required">Please enter city</span>
+                            <span class="error" ng-show="hospital.showFormErrors && hospital.hospForm.city.$error.minlength">Minimum is 5 characters</span>
+                            <span class="error" ng-show="hospital.showFormErrors && hospital.hospForm.city.$error.maxlength">Maximum is 20 characters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    State
+                    <div class="input-group">
+                        <select class="form-control ng-class:{'has-error': hospital.hospForm.state.$touched && !hospital.hospForm.state.$valid}" id="state" name="state" ng-model="hospital.newData.State" required form-autofill-fix>
+                            <option value=""></option>
+                            <option value="AL">AL</option>
+                            <option value="AK">AK</option>
+                            <option value="AZ">AZ</option>
+                            <option value="AR">AR</option>
+                            <option value="CA">CA</option>
+                            <option value="CO">CO</option>
+                            <option value="CT">CT</option>
+                            <option value="DE">DE</option>
+                            <option value="DC">DC</option>
+                            <option value="FL">FL</option>
+                            <option value="GA">GA</option>
+                            <option value="HI">HI</option>
+                            <option value="ID">ID</option>
+                            <option value="IL">IL</option>
+                            <option value="IN">IN</option>
+                            <option value="IA">IA</option>
+                            <option value="KS">KS</option>
+                            <option value="KY">KY</option>
+                            <option value="LA">LA</option>
+                            <option value="ME">ME</option>
+                            <option value="MD">MD</option>
+                            <option value="MA">MA</option>
+                            <option value="MI">MI</option>
+                            <option value="MN">MN</option>
+                            <option value="MS">MS</option>
+                            <option value="MO">MO</option>
+                            <option value="MT">MT</option>
+                            <option value="NE">NE</option>
+                            <option value="NV">NV</option>
+                            <option value="NH">NH</option>
+                            <option value="NJ">NJ</option>
+                            <option value="NM">NM</option>
+                            <option value="NY">NY</option>
+                            <option value="NC">NC</option>
+                            <option value="ND">ND</option>
+                            <option value="OH">OH</option>
+                            <option value="OK">OK</option>
+                            <option value="OR">OR</option>
+                            <option value="PA">PA</option>
+                            <option value="RI">RI</option>
+                            <option value="SC">SC</option>
+                            <option value="SD">SD</option>
+                            <option value="TN">TN</option>
+                            <option value="TX">TX</option>
+                            <option value="UT">UT</option>
+                            <option value="VT">VT</option>
+                            <option value="VA">VA</option>
+                            <option value="WA">WA</option>
+                            <option value="WV">WV</option>
+                            <option value="WI">WI</option>
+                            <option value="WY">WY</option>
+                        </select>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="hospital.showFormErrors && hospital.hospForm.state.$error.required">Please enter state</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Zip Code
+                    <div class="input-group">
+                        <input type="text"
+                               placeholder=""
+                               style="width: 150px;"
+                               id="zipCode"
+                               name="zipCode"
+                               ng-model="hospital.newData.ZipCode"
+                               class="form-control ng-class:{'has-error': hospital.hospForm.zipCode.$touched && !hospital.hospForm.zipCode.$valid}"
+                               ng-minlength="5"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="hospital.showFormErrors && hospital.hospForm.zipCode.$error.required">Please enter zip code</span>
+                            <span class="error" ng-show="hospital.showFormErrors && hospital.hospForm.zipCode.$error.minlength">Minimum is 5 characters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6 text-left">
+                    <button type="submit" id="cmdSubmit" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Save</button>
+                    <button ng-if="!hospital.newData.Id" type="reset" class="btn btn-sm btn-warning"><i class="fa fa-plus"></i> Reset</button>
+                </div>
+            </div>
+
+        </form>
+
+        <form class="form-horizontal form-bordered form-control-borderless" ng-if="!hospital.editingForm">
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <p><strong>Name:</strong></p>
+                    <div class="input-group">
+                        <p>{{hospital.newData.Name}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <p><strong>Abbrev:</strong></p>
+                    <div class="input-group">
+                        <p>{{hospital.newData.Abbrev}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <p><strong>Address:</strong></p>
+                    <div class="input-group">
+                        <p>{{hospital.newData.Address}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <p><strong>City:</strong></p>
+                    <div class="input-group">
+                        <p>{{hospital.newData.City}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <p><strong>State:</strong></p>
+                    <div class="input-group">
+                        <p>{{hospital.newData.State}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <p><strong>Zip Code:</strong></p>
+                    <div class="input-group">
+                        <p>{{hospital.newData.ZipCode}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6 text-left">
+                    <button id="cmdSubmit" class="btn btn-sm btn-primary" ng-click="hospital.onEditForm()"><i class="fa fa-plus"></i> Edit Hospital</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="container">
+            <div class="block" ng-if="hospital.gynCases || hospital.obCases || hospital.deliveries">
+                <div class="content">
+                    <h3>Total Cases: {{hospital.gynCases.length + hospital.obCases.length + hospital.deliveries.length}}</h3>
+                </div>
+            </div>
+
+            <div class="block" ng-if="hospital.obCases">
+                <div class="content">
+                    <h4>Obstetrical Cases: {{hospital.obCases.length}}</h4>
+                </div>
+                <table>
+                    <tr>
+                        <th>Patient ID</th>
+                        <th>Age</th>
+                        <th>Gravity</th>
+                        <th>Parity</th>
+                        <th>Antepartum</th>
+                        <th>Delivery/Postpartum</th>
+                        <th>Operative Procedures and/or Treatment</th>
+                        <th>Birth Weight</th>
+                        <th>Perinatal Death</th>
+                        <th>APGAR Score (After 1 min)</th>
+                        <th>APGAR Score (After 5 mins)</th>
+                        <th>Hospital</th>
+                        <th>Days In Hospital</th>
+                        <th>Date Added</th>
+                        <th>Date Modified</th>
+                    </tr>
+                    <tr ng-repeat="obCase in hospital.obCases">
+                        <td>{{obCase.PatientID}}</td>
+                        <td>{{obCase.Age}}</td>
+                        <td>{{obCase.Gravity}}</td>
+                        <td>{{obCase.Parity}}</td>
+                        <td>{{obCase.Antepartum.Category}}</td>
+                        <td>{{obCase.Postpartum.Category}}</td>
+                        <td>{{obCase.Treatment}}</td>
+                        <td>{{obCase.BirthWeight}}</td>
+                        <td>{{obCase.Death}}</td>
+                        <td>{{obCase.OneMinScore}}</td>
+                        <td>{{obCase.FiveMinScore}}</td>
+                        <td>{{obCase.Hospital.Name}}</td>
+                        <td>{{obCase.DaysInHospital}}</td>
+                        <td>{{obCase.DateAdded | date: "M/d/yyyy"}}</td>
+                        <td>{{obCase.DateModified | date: "M/d/yyyy"}}</td>
+                        <td><a ng-href="http://TMX.dev/obcases/{{obCase.Id}}" title="Edit">Edit</a></td>
+                        <td><a ng-href="javascript:void(0)" title="Delete" ng-click="dashboard.onDeleteObCase(obCase)">Delete</a></td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <div class="block" ng-if="hospital.gynCases">
+                <div class="content">
+                    <h4>Gynecological Cases: {{hospital.gynCases.length}}</h4>
+                </div>
+                <table>
+                    <tr>
+                        <th>Patient ID</th>
+                        <th>Age</th>
+                        <th>Gravity</th>
+                        <th>Parity</th>
+                        <th>Admission</th>
+                        <th>Treatment</th>
+                        <th>Surgical Pathology</th>
+                        <th>Complications</th>
+                        <th>Hospital</th>
+                        <th>Days In Hospital</th>
+                        <th>Date Added</th>
+                        <th>Date Modified</th>
+                    </tr>
+                    <tr ng-repeat="gynCase in hospital.gynCases">
+                        <td>{{gynCase.PatientID}}</td>
+                        <td>{{gynCase.Age}}</td>
+                        <td>{{gynCase.Gravity}}</td>
+                        <td>{{gynCase.Parity}}</td>
+                        <td>{{gynCase.Admission}}</td>
+                        <td>{{gynCase.Treatment}}</td>
+                        <td>{{gynCase.SurgicalPath}}</td>
+                        <td>{{gynCase.Complication.Category}}</td>
+                        <td>{{gynCase.Hospital.Name}}</td>
+                        <td>{{gynCase.DaysInHospital}}</td>
+                        <td>{{gynCase.DateAdded | date: "M/d/yyyy"}}</td>
+                        <td>{{gynCase.DateModified | date: "M/d/yyyy"}}</td>
+                        <td><a ng-href="http://TMX.dev/gyncases/{{gynCase.Id}}" title="Edit">Edit</a></td>
+                        <td><a ng-href="javascript:void(0)" title="Delete" ng-click="dashboard.onDeleteGynCase(gynCase)">Delete</a></td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="block" ng-if="hospital.deliveries">
+                <div class="content">
+                    <h4>Deliveries: {{hospital.deliveries.length}}</h4>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/TMX.services.hospitals.js"></script>
+    <script src="~/Scripts/TMX.services.gyn.js"></script>
+    <script src="~/Scripts/TMX.services.obstetrics.js"></script>
+    <script src="~/Scripts/TMX.services.uncomplicated.js"></script>
+    <script type="text/javascript">
+
+        TMX.page.startUp = function () {
+            TMX.page.userController = TMX.ng.getControllerInstance($("#hospitalsCtrl"));
+        }
+
+        TMX.services.hospitalsFactory = function ($baseService) {
+            var aTMXServiceObject = TMX.services.hospitals;
+            var newService = $baseService.merge(true, {}, aTMXServiceObject, $baseService);
+            return newService;
+        }
+
+        TMX.services.gynFactory = function ($baseService) {
+            var aTMXServiceObject = TMX.services.gyn;
+            var newService = $baseService.merge(true, {}, aTMXServiceObject, $baseService);
+            return newService;
+        }
+
+        TMX.services.obstetricsFactory = function ($baseService) {
+            var aTMXServiceObject = TMX.services.obstetrics;
+            var newService = $baseService.merge(true, {}, aTMXServiceObject, $baseService);
+            return newService;
+        }
+
+        TMX.services.uncomplicatedFactory = function ($baseService) {
+            var aTMXServiceObject = TMX.services.uncomplicated;
+            var newService = $baseService.merge(true, {}, aTMXServiceObject, $baseService);
+            return newService;
+        }
+
+        TMX.ng.addService(TMX.ng.app.module,
+            "$hospitalsService",
+            ["$baseService"],
+            TMX.services.hospitalsFactory);
+
+        TMX.ng.addService(TMX.ng.app.module,
+            "$gynService",
+            ["$baseService"],
+            TMX.services.gynFactory);
+
+        TMX.ng.addService(TMX.ng.app.module,
+            "$obstetricsService",
+            ["$baseService"],
+            TMX.services.obstetricsFactory);
+
+        TMX.ng.addService(TMX.ng.app.module,
+            "$uncomplicatedService",
+            ["$baseService"],
+            TMX.services.uncomplicatedFactory);
+
+        TMX.page.hospitalsControllerFactory = function ($scope, $baseController, $hospitalsService, $gynService, $obstetricsService, $uncomplicatedService) {
+
+            var vm = this;
+
+            $baseController.merge(vm, $baseController);
+
+            vm.$hospitalsService = $hospitalsService;
+            vm.$gynService = $gynService;
+            vm.$obstetricsService = $obstetricsService;
+            vm.$uncomplicatedService = $uncomplicatedService;
+            vm.$scope = $scope;
+
+            //PUBLIC METHODS///////////////////////
+            vm.getForm = _getForm;
+            vm.onSubmitForm = _onSubmitForm;
+            vm.onEditForm = _onEditForm;
+            vm.onCancelForm = _onCancelForm;
+
+            //PUBLIC HANDLERS//////////////////////
+            vm.onCreateSuccess = _onCreateSuccess;
+            vm.onGetSuccess = _onGetSuccess;
+            vm.onGetGynCaseSuccess = _onGetGynCaseSuccess;
+            vm.onGetObCaseSuccess = _onGetObCaseSuccess;
+            vm.onGetUncompCaseSuccess = _onGetUncompCaseSuccess;
+            vm.onError = _onError;
+
+            //PUBLIC MEMBERS/////////////////////
+            vm.newData = null;
+            vm.showFormErrors = false;
+            vm.alert = {
+                saved: "Hospital saved!",
+                updated: "Hospital updated!",
+                error: "An error has occurred!"
+            };
+
+            vm.notify = vm.$hospitalsService.getNotifier($scope);
+
+            render();
+
+            //PRIVATE METHODS////////////////////
+            function render() {
+                vm.showFormErrors = false;
+                if (@Model.Item > 0) vm.getForm();
+                else vm.editingForm = true;
+            };
+
+            function _onSubmitForm() {
+                console.log("validating");
+                vm.showFormErrors = true;
+
+                if (vm.hospForm.$valid) {
+                    console.log("form is valid");
+                    var hospId = @Model.Item;
+                    if (hospId > 0) {
+                        vm.$hospitalsService.updateHospital(hospId, vm.newData, vm.onCreateSuccess, vm.onError);
+                    } else {
+                        vm.$hospitalsService.addHospital(vm.newData, vm.onCreateSuccess, vm.onError);
+                        //$("#cmdSubmit").html("Update Hospital");
+                    }
+                } else {
+                    console.log("form is not valid");
+                }
+            }
+
+            function _getForm() {
+                vm.$hospitalsService.getHospital(@Model.Item, vm.onGetSuccess, vm.onError);
+                vm.$gynService.getGynCaseByHospital(@Model.Item, vm.onGetGynCaseSuccess, vm.onError);
+                vm.$obstetricsService.getObCaseByHospital(@Model.Item, vm.onGetObCaseSuccess, vm.onError);
+                vm.$uncomplicatedService.getUncompCaseByHospital(@Model.Item, vm.onGetUncompCaseSuccess, vm.onError);
+            }
+
+            function _onEditForm(){
+                vm.editingForm = true;
+            }
+
+            function _onCancelForm(){
+                if (vm.newData.Id) vm.editingForm = false;
+                else vm.newData = null;
+            }
+
+            //PRIVATE HANDLERS////////////////////////
+            function _onCreateSuccess(data) {
+                vm.notify(function(){
+                    if (data && data.Item) {
+                        vm.newData = data.Item;
+                    }
+                    vm.editingForm = false;
+                    console.log(vm.alert.saved);
+                    window.alert(vm.alert.saved);
+                });
+            }
+
+            function _onGetSuccess(data) {
+                if (data && data.Item) {
+                    vm.notify(function () {
+                        vm.newData = data.Item;
+                        console.log("HOSPITAL:", vm.newData);
+                    });
+                    vm.editingForm = false;
+                    //$("#cmdSubmit").html("Update Hospital");
+                }
+            }
+
+            function _onGetGynCaseSuccess(data){
+                if (data && data.Items) {
+                    vm.notify(function () {
+                        vm.gynCases = data.Items;
+                        console.log("GYN CASES:", vm.gynCases);
+                    });
+                }
+            }
+
+            function _onGetObCaseSuccess(data){
+                if (data && data.Items) {
+                    vm.notify(function () {
+                        vm.obCases = data.Items;
+                        console.log("OB CASES:", vm.obCases);
+                    });
+                }
+            }
+
+            function _onGetUncompCaseSuccess(data){
+                if (data && data.Items) {
+                    vm.notify(function () {
+                        vm.deliveries = data.Items;
+                        console.log("DELIVERIES:", vm.deliveries);
+                    });
+                }
+            }
+
+            function _onError(jqXHR, textStatus, errorThrown) {
+                console.log(vm.alert.error);
+                window.alert(vm.alert.error);
+            }
+
+            TMX.ng.app.module.directive('formAutofillFix', function () {
+                return function (scope, elem, attrs) {
+                    // Fixes Chrome bug: https://groups.google.com/forum/#!topic/angular/6NlucSskQjY
+                    elem.prop('method', 'POST');
+
+                    // Fix autofill issues where Angular doesn't know about autofilled inputs
+                    if (attrs.ngSubmit) {
+                        setTimeout(function () {
+                            elem.unbind('submit').submit(function (e) {
+                                e.preventDefault();
+                                elem.find('input, textarea, select').trigger('input').trigger('change').trigger('keydown');
+                                scope.$apply(attrs.ngSubmit);
+                            });
+                        }, 0);
+                    }
+                };
+            });
+        }
+
+        TMX.ng.addController(TMX.ng.app.module,
+            "hospitalsController",
+            ['$scope', '$baseController', "$hospitalsService", "$gynService", "$obstetricsService", "$uncomplicatedService"],
+            TMX.page.hospitalsControllerFactory);
+
+
+    </script>
+
+}

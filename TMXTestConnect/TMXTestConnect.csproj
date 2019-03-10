@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MySql.Data">
+      <HintPath>..\..\..\..\Downloads\mysql-connector-net-8.0.15-noinstall\v4.5.2\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,12 +46,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataProvider.cs" />
     <Compile Include="DBConnect.cs" />
+    <Compile Include="Extensions\IDataReaderExt.cs" />
+    <Compile Include="Interfaces\IDao.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\SqlDao.cs" />
+    <Compile Include="Providers\Structured\IntIdTable.cs" />
+    <Compile Include="Providers\Structured\NVarcharTable.cs" />
+    <Compile Include="Providers\Structured\UniqueIdTable.cs" />
+    <Compile Include="Providers\Structured\VarcharIdTable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TMX.Web\TMX.Web.csproj">
+      <Project>{eabae2fd-e0ec-4b05-944f-c93f28e5dd68}</Project>
+      <Name>TMX.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TMXClasses\TMXClasses.csproj">
+      <Project>{ebe91a0a-fbab-4164-b80e-cddd2d3bd844}</Project>
+      <Name>TMXClasses</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

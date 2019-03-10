@@ -9,6 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectMySqlDB", "ConnectMy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMXTestConnect", "TMXTestConnect\TMXTestConnect.csproj", "{A3E4D23A-926E-42C7-AF0D-BD43CEE300EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMX.Data", "TMX.Data\TMX.Data.csproj", "{27458FDD-38EC-4290-BB5C-4ED7861C2907}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TMXClasses", "TMXClasses\TMXClasses.csproj", "{EBE91A0A-FBAB-4164-B80E-CDDD2D3BD844}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableExtrator", "TableExtrator\TableExtrator.csproj", "{A32F369D-8ABD-4B46-9D14-B317855CEEE9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +33,18 @@ Global
 		{A3E4D23A-926E-42C7-AF0D-BD43CEE300EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3E4D23A-926E-42C7-AF0D-BD43CEE300EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3E4D23A-926E-42C7-AF0D-BD43CEE300EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27458FDD-38EC-4290-BB5C-4ED7861C2907}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27458FDD-38EC-4290-BB5C-4ED7861C2907}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27458FDD-38EC-4290-BB5C-4ED7861C2907}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27458FDD-38EC-4290-BB5C-4ED7861C2907}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBE91A0A-FBAB-4164-B80E-CDDD2D3BD844}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBE91A0A-FBAB-4164-B80E-CDDD2D3BD844}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBE91A0A-FBAB-4164-B80E-CDDD2D3BD844}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBE91A0A-FBAB-4164-B80E-CDDD2D3BD844}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A32F369D-8ABD-4B46-9D14-B317855CEEE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A32F369D-8ABD-4B46-9D14-B317855CEEE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A32F369D-8ABD-4B46-9D14-B317855CEEE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A32F369D-8ABD-4B46-9D14-B317855CEEE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

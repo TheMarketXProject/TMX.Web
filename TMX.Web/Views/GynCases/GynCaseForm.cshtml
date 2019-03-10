@@ -1,0 +1,390 @@
+﻿@model TMX.Web.Models.ViewModels.ItemViewModel<int>
+
+@{
+    ViewBag.Title = "Gynecological Patient";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Gynecological Patient Case</h2>
+
+<div data-ng-controller="gynController as gyn" id="gynCtrl">
+    <div id="formContainer" class="block push-bit form-horizontal form-bordered form-control-borderless">
+        <form class="form-horizontal form-bordered form-control-borderless" id="gynForm" name="gyn.gynForm" ng-submit="gyn.onSubmitForm()" novalidate>
+            <input type="text" class="hidden" id="caseId" name="Id" ng-model="gyn.caseData.Id" value="@Model.Item" form-autofill-fix>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Patient ID
+                    <div class="input-group">
+                        <input type="text"
+                               placeholder=""
+                               style="width: 150px;"
+                               id="patientId"
+                               name="PatientID"
+                               ng-model="gyn.caseData.PatientID"
+                               class="form-control ng-class:{'has-error': gyn.gynForm.PatientId.$touched && !gyn.gynForm.PatientId.$valid}"
+                               ng-minlength="5"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="gyn.showFormErrors && gyn.gynForm.PatientId.$error.required">Please enter patient ID</span>
+                            <span class="error" ng-show="gyn.showFormErrors && gyn.gynForm.PatientId.$error.minlength">Patient ID is required to be at least 5 characters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Age
+                    <div class="input-group">
+                        <input type="number"
+                               placeholder=""
+                               style="width: 75px;"
+                               id="age"
+                               name="Age"
+                               ng-model="gyn.caseData.Age"
+                               class="form-control ng-class:{'error': gyn.showFormErrors && !gyn.gynForm.Age.$valid}"
+                               min="13" max="89"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="gyn.showFormErrors && gyn.gynForm.Age.$error.required">Please enter patient's age</span>
+                            <span class="error" ng-show="gyn.showFormErrors && gyn.gynForm.Age.$error.min || gyn.gynForm.Age.$error.max">Not a valid age</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Gravity
+                    <div class="input-group">
+                        <input type="number"
+                               placeholder=""
+                               style="width: 75px;"
+                               id="gravity"
+                               name="Gravity"
+                               ng-model="gyn.caseData.Gravity"
+                               class="form-control ng-class:{'error': gyn.showFormErrors && !gyn.gynForm.Gravity.$valid}"
+                               min="1"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="gyn.showFormErrors && gyn.gynForm.Gravity.$error.required">Please enter gravity</span>
+                            <span class="error" ng-show="gyn.showFormErrors && gyn.gynForm.Gravity.$error.min">Patient must have at least 1 pregnancy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Parity
+                    <div class="input-group">
+                        <input type="number"
+                               placeholder=""
+                               style="width: 75px;"
+                               id="parity"
+                               name="Parity"
+                               ng-model="gyn.caseData.Parity"
+                               class="form-control ng-class:{'error': gyn.showFormErrors && !gyn.gynForm.Parity.$valid}"
+                               min="0"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="gyn.showFormErrors && gyn.gynForm.Parity.$error.required">Enter valid # of term deliveries</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Admission
+                    <div class="input-group">
+                        <input type="text"
+                               placeholder=""
+                               id="admission"
+                               name="Admission"
+                               ng-model="gyn.caseData.Admission"
+                               class="form-control ng-class:{'error': gyn.showFormErrors && !gyn.gynForm.Admission.$valid}"
+                               ng-minlength="5"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="gyn.showFormErrors && gyn.gynForm.Admission.$error.required">Please enter admission</span>
+                            <span class="error" ng-show="gyn.showFormErrors && gyn.gynForm.Admission.$error.minlength">Please enter at least 5 characters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Treatment
+                    <div class="input-group">
+                        <input type="text"
+                               placeholder=""
+                               id="treatment"
+                               name="treatment"
+                               ng-model="gyn.caseData.Treatment"
+                               class="form-control ng-class:{'error': gyn.showFormErrors && !gyn.gynForm.treatment.$valid}"
+                               ng-minlength="5"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="gyn.showFormErrors && gyn.gynForm.treatment.$error.required">Please enter treatment</span>
+                            <span class="error" ng-show="gyn.showFormErrors && gyn.gynForm.treatment.$error.minlength">Please enter at least 5 characters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    Surgical Pathology
+                    <div class="input-group">
+                        <input type="text"
+                               placeholder=""
+                               id="surgicalPath"
+                               name="SurgicalPath"
+                               ng-model="gyn.caseData.SurgicalPath"
+                               class="form-control ng-class:{'error': gyn.showFormErrors && !gyn.gynForm.SurgicalPath.$valid}"
+                               ng-minlength="5"
+                               required
+                               form-autofill-fix>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="gyn.showFormErrors && gyn.gynForm.SurgicalPath.$error.required">Please enter pathology</span>
+                            <span class="error" ng-show="gyn.showFormErrors && gyn.gynForm.SurgicalPath.$error.minlength">Please enter at least 5 characters</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <div class="input-group ng-class:{'error': gyn.showFormErrors && !gyn.gynForm.hospitalId.$valid}">
+                        Complications<br>
+                        @*<select class="form-control" id="complications" name="ComplicationsID" ng-model="gyn.caseData.ComplicationsID" required form-autofill-fix>
+                            <option value=""></option>
+                            <option ng-repeat="category in gyn.categories" name="category" value="{{category.Id}}">{{category.Category}}</option>
+                        </select>*@
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="gyn.showFormErrors && gyn.gynForm.ComplicationsID.$error.required">Please enter category</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <div class="input-group ng-class:{'error': gyn.showFormErrors && !gyn.gynForm.hospitalId.$valid}">
+                        Hospital<br>
+                        <select ui-select2 class="form-control" id="hospital" name="HospitalId" data-placeholder="Pick a hospital" ng-model="gyn.caseData.HospitalId" required form-autofill-fix>
+                            <option value=""></option>
+                            <option ng-repeat="hospital in gyn.hospitals" name="hospital" value="{{hospital.Id}}">{{hospital.Name}}</option>
+                        </select>
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="gyn.showFormErrors && gyn.gynForm.HospitalId.$error.required">Please enter hospital</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <div class="input-group">
+                        Days in hospital<br>
+                        <input type="number"
+                               style="width: 80px;"
+                               id="daysInHospital"
+                               name="daysInHospital"
+                               ng-model="gyn.caseData.DaysInHospital"
+                               class="form-control ng-class:{'error': gyn.showFormErrors && !gyn.gynForm.daysInHospital.$valid}"
+                               min="0"
+                               required
+                               form-autofill-fix> days
+                        <div role="alert" class="help-inline error" style="color:red">
+                            <span class="error" ng-show="gyn.showFormErrors && gyn.gynForm.daysInHospital.$error.required">Please enter length of days in hospital</span>
+                            <span class="error" ng-show="gyn.showFormErrors && gyn.gynForm.daysInHospital.$error.number">Please enter valid numbers</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6 text-left">
+                    <button type="submit" id="cmdSubmit" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> Submit Case</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/TMX.services.gyn.js"></script>
+    <script src="~/Scripts/TMX.services.hospitals.js"></script>
+    <script src="~/Scripts/TMX.services.categories.js"></script>
+    <script type="text/javascript">
+
+        TMX.page.startUp = function () {
+            TMX.page.userController = TMX.ng.getControllerInstance($("#gynCtrl"));
+        }
+
+        TMX.services.gynFactory = function ($baseService) {
+            var aTMXServiceObject = TMX.services.gyn;
+            var newService = $baseService.merge(true, {}, aTMXServiceObject, $baseService);
+            return newService;
+        }
+
+        TMX.services.hospitalsFactory = function ($baseService) {
+            var aTMXServiceObject = TMX.services.hospitals;
+            var newService = $baseService.merge(true, {}, aTMXServiceObject, $baseService);
+            return newService;
+        }
+        TMX.services.categoriesFactory = function ($baseService) {
+            var aTMXServiceObject = TMX.services.categories;
+            var newService = $baseService.merge(true, {}, aTMXServiceObject, $baseService);
+            return newService;
+        }
+
+        TMX.ng.addService(TMX.ng.app.module,
+            "$gynService",
+            ["$baseService"],
+            TMX.services.gynFactory);
+
+        TMX.ng.addService(TMX.ng.app.module,
+            "$hospitalsService",
+            ["$baseService"],
+            TMX.services.hospitalsFactory);
+
+        TMX.ng.addService(TMX.ng.app.module,
+            "$categoriesService",
+            ["$baseService"],
+            TMX.services.categoriesFactory);
+
+        TMX.page.gynControllerFactory = function ($scope, $baseController, $gynService, $hospitalsService, $categoriesService) {
+
+            var vm = this;
+
+            $baseController.merge(vm, $baseController);
+
+            vm.$gynService = $gynService;
+            vm.$hospitalsService = $hospitalsService;
+            vm.$categoriesService = $categoriesService;
+            vm.$scope = $scope;
+
+            vm.onSubmitForm = _onSubmitForm;
+            vm.getForm = _getForm;
+
+            vm.onCreateSuccess = _onCreateSuccess;
+            vm.onGetSuccess = _onGetSuccess;
+            vm.onGetHospitalSuccess = _onGetHospitalSuccess;
+            vm.onCategoriesSuccess = _onCategoriesSuccess;
+            vm.onError = _onError;
+
+            vm.caseData = null;
+            vm.showFormErrors = false;
+            vm.hospitals = null;
+            vm.alert = {
+                saved: "Case saved!",
+                updated: "Case updated!",
+                error: "An error has occurred!"
+            };
+
+            vm.notify = vm.$gynService.getNotifier($scope);
+
+            render();
+
+            function render() {
+                vm.showFormErrors = false;
+                vm.$hospitalsService.getHospitalList(vm.onGetHospitalSuccess, vm.onError);
+                vm.$categoriesService.getGynCategoryList(vm.onCategoriesSuccess, vm.onError);
+                vm.getForm();
+            };
+
+            function _onSubmitForm() {
+                console.log("validating");
+                vm.showFormErrors = true;
+
+                if (vm.gynForm.$valid) {
+                    console.log("form is valid");
+                    console.log(vm.caseData);
+                    var caseId = @Model.Item;
+                    if (caseId > 0) {
+                        vm.$gynService.updateGynCase(caseId, vm.caseData, vm.onCreateSuccess, vm.onError);
+                    } else {
+                        vm.$gynService.createGynCase(vm.caseData, vm.onCreateSuccess, vm.onError);
+                        $("#cmdSubmit").html("Update Case");
+                    }
+                } else {
+                    console.log("form is not valid");
+                }
+            }
+
+            function _getForm() {
+                vm.$gynService.getGynCase(@Model.Item, vm.onGetSuccess, vm.onError);
+            }
+
+            function _onGetSuccess(data) {
+
+                if (data && data.Item) {
+                    vm.notify(function () {
+                        vm.caseData = data.Item;
+                    });
+                    $("#hospital").val(data.Item.Hospital.Id).trigger('change');
+                    $("#complications").val(data.Item.Complication.Id).trigger('change');
+                    $("#cmdSubmit").html("Update Case");
+                    console.log(vm.caseData);
+                }
+            }
+
+            function _onGetHospitalSuccess(data) {
+                vm.notify(function () {
+                    vm.hospitals = data.Items;
+                    console.log('HOSPITALS: ', vm.hospitals);
+                });
+            }
+
+            function _onCategoriesSuccess(data){
+                vm.notify(function () {
+                    vm.categories = data.Items;
+                    console.log('CATEGORIES: ', vm.categories);
+                });
+            }
+
+            function _onCreateSuccess(data, status, xhr) {
+                console.log(vm.alert.saved);
+                window.alert(vm.alert.saved);
+                location.href = 'http://TMX.dev/gyncases';
+            }
+
+            function _onError(jqXHR, textStatus, errorThrown) {
+                console.log(vm.alert.error);
+                window.alert(vm.alert.error);
+            }
+
+            TMX.ng.app.module.directive('formAutofillFix', function () {
+                return function (scope, elem, attrs) {
+                    // Fixes Chrome bug: https://groups.google.com/forum/#!topic/angular/6NlucSskQjY
+                    elem.prop('method', 'POST');
+
+                    // Fix autofill issues where Angular doesn't know about autofilled inputs
+                    if (attrs.ngSubmit) {
+                        setTimeout(function () {
+                            elem.unbind('submit').submit(function (e) {
+                                e.preventDefault();
+                                elem.find('input, textarea, select').trigger('input').trigger('change').trigger('keydown');
+                                scope.$apply(attrs.ngSubmit);
+                            });
+                        }, 0);
+                    }
+                };
+            });
+        }
+
+        TMX.ng.addController(TMX.ng.app.module,
+            "gynController",
+            ['$scope', '$baseController', "$gynService", "$hospitalsService", "$categoriesService"],
+            TMX.page.gynControllerFactory);
+
+
+    </script>
+
+}
+
+
