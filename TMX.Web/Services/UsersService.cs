@@ -7,33 +7,39 @@ using TMX.Data.Extensions;
 using System.Data.SqlClient;
 using TMX.Web.Models.Requests;
 using TMXClasses;
+//using TMX.EDM;
 
 namespace TMX.Web.Services
 {
   public class UsersService : BaseService
   {
-    public static List<Users> GetAllUsers()
+    //public static List<User> GetAllUsers()
+    //{
+    //  List<User> users;
+    //  using (var context = new TMXDBEntities())
+    //  {
+    //    users = context.Users.ToList();
+    //  }
+    //  return users;
+    //}
+
+    public static User GetUser(int id)
     {
-      return Users.GetAll();
+      return User.GetUser(id);
     }
 
-    public static Users GetUser(int id)
-    {
-      return Users.GetUser(id);
-    }
+    //public static int CreateUpdateUser(object model)
+    //{
+    //  User user = new User();
+    //  user.Clone(model);
+    //  user.Update();
+    //  return user.Id;
+    //}
 
-    public static int CreateUpdateUser(object model)
-    {
-      Users user = new Users();
-      user.Clone(model);
-      user.Update();
-      return user.Id;
-    }
-
-    public static void DeleteUser(int id)
-    {
-      Users.Delete(id);
-    }
+    //public static void DeleteUser(int id)
+    //{
+    //  User.Delete(id);
+    //}
 
     //private static void GetValues(SqlParameterCollection collection, dynamic model)
     //{

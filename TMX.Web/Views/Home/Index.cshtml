@@ -1,8 +1,8 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+  ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron" align="center">
+<!--<div class="jumbotron" align="center">
     <h1>TMX</h1>
     <p class="lead">Case Management System - Easy Access For Resident Physicians</p>
     <p><a href="http://TMX.dev/hospitals" class="btn btn-primary btn-lg">View Hospitals</a></p>
@@ -28,4 +28,99 @@
         @*<p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>*@
         <p><a class="btn btn-default" href="http://localhost:53203/officecases">View Cases</a></p>
     </div>
-</div>
+</div>-->
+
+<head>
+  <meta charset="utf-8">
+  <title>The Market X - Welcome</title>
+
+</head>
+
+<body>
+  <div id="header-container">
+    <a href="index.html">
+      <div id="header-logo">
+        <img alt="Market X Logo" src="assets/marketxlogo_long.png">
+      </div>
+    </a>
+  </div>
+  <div id="container-splash-page">
+    <div id="splash-page-left-column">
+      <div class="splash-page-header">The Market X</div>
+      <div class="splash-page-text">
+        The Market X provides businesses with a robust suite of services to connect with customers from any smartphone and tablet device. Our offerings include: <br>
+        <ul>
+          <li>Fully branded mobile apps</li>
+          <li>Social media marketing</li>
+          <li>Online storefront technical support</li>
+        </ul>
+      </div>
+      <a style="text-decoration: none" href="#myModal" rel="modal:open">
+        <div class="splash-page-button-home" id="btnLogin">
+          <span class="splash-page-button-text">Get Started</span>
+        </div>
+      </a>
+    </div>
+    <div id="splash-page-right-column">
+      <div class="splash-page-image">
+        <img src="assets/black-business-people-pf.jpg">
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">×</span>
+      <h2>Welcome to the Market X</h2>
+      <h3>Would would you like to do?</h3>
+
+      <div class="containerButtons">
+        <a href="~/Login" style="width:auto;">Login</a>
+        <a href="~/Register" style="width:auto;">Sign Up</a>
+      </div>
+
+
+    </div>
+
+  </div>
+  @*<div id="id02" class="modal">
+
+    <form class="modal-content animate" action="/action_page.php" method="post">
+      <div class="imgcontainer">
+        <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">×</span>
+      </div>
+
+      <div class="container">
+        <label for="uname"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="uname" required="">
+
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="psw" required="">
+
+        <label for="psw"><b>Fisrt Name</b></label>
+        <input type="text" placeholder="First Name" name="fname" required="">
+
+        <label for="psw"><b>Last Name</b></label>
+        <input type="text" placeholder="Last Name" name="lname" required="">
+
+        <label for="psw"><b>E-mail</b></label>
+        <input type="text" placeholder="E-mail Address" name="email" required="">
+
+        <button type="submit">Register</button>
+      </div>
+
+      <div class="container" style="background-color:#f1f1f1">
+        <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
+      </div>
+    </form>
+  </div>*@
+  <script type="text/javascript">
+
+
+  </script>
+
+
+
+</body>

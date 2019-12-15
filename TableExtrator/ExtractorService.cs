@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TableExtrator.Classes;
 using TMX.Web.Services;
+using TMXClasses.Users;
 using TMXClasses;
 
 namespace TableExtrator
@@ -15,18 +16,18 @@ namespace TableExtrator
     public static int ExtractUsers()
     {
       int usersExtracted = 0;
-      if (Users.GetAll().Count() > 0)
+      if (User.GetAll().Count() > 0)
         SQLHelper.ExecuteQuery("truncate table Users");
-      if (UserProfiles.GetAll().Count() > 0)
+      if (GeneralUser.GetAll().Count() > 0)
         SQLHelper.ExecuteQuery("truncate table UserProfiles");
       List<OldUsers> oldUsers = OldUsers.GetAll();
       foreach (OldUsers oldUser in oldUsers)
       {
 
-        var user = new Users()
+        var user = new User()
         {
           Id = oldUser.id,
-          UserType = oldUser.admin == "y" ? "Admin" : "Gen",
+          //UserType = oldUser.admin == "y" ? "Admin" : "Gen",
           IsActive = true,
           Email = oldUser.email,
           Password = oldUser.password,
@@ -34,11 +35,10 @@ namespace TableExtrator
           LastLoginDate = (oldUser.loginStatus == null || oldUser.loginStatus == "0000-00-00 00:00:00") ? DateTime.MinValue : DateTime.Parse(oldUser.loginStatus)
         };
 
-        var userId = UsersService.CreateUpdateUser(user);
+        //var userId = UsersService.CreateUpdateUser(user);
 
-        var userProfile = new UserProfiles()
+        var userProfile = new GeneralUser()
         {
-          UserId = userId,
           FirstName = oldUser.fname,
           LastName = oldUser.lname,
           DisplayName = oldUser.displayName,
@@ -50,7 +50,7 @@ namespace TableExtrator
           DateCreated = DateTime.Now
         };
 
-        UserProfilesService.CreateUpdateProfile(userProfile);
+        //UserProfilesService.CreateUpdateProfile(userProfile);
 
         usersExtracted++;
       }

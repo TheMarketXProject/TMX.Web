@@ -7,13 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using TMX.Data.Utlilties.SQL;
 
-namespace TMXClasses
+namespace TMXClasses.Users
 {
-  public class UserProfiles : BaseClass
+  public class GeneralUser : BaseUser
   {
     #region Properties
-    public int Id { get; set; }
-    public int UserId { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string DisplayName { get; set; }
@@ -27,11 +25,11 @@ namespace TMXClasses
     #endregion
 
     #region Constructors
-    public UserProfiles()
+    public GeneralUser()
     {
     }
 
-    public UserProfiles(int Id)
+    public GeneralUser(int Id)
     {
       this.Id = Id;
       Load();
@@ -43,7 +41,7 @@ namespace TMXClasses
     {
       List<SqlParameter> parameters = new List<SqlParameter>();
       parameters.Add(new SqlParameter("@Id", Id));
-      using (SqlDataReader reader = ExecutionHelper.ExecuteReader("dbo.UserProfiles_SelectById", parameters))
+      using (SqlDataReader reader = ExecutionHelper.ExecuteReader("dbo.GeneralUser_SelectById", parameters))
       {
         if (reader == null)
           return;
@@ -57,7 +55,7 @@ namespace TMXClasses
       ArrayList propertiesToOmit = new ArrayList();
       propertiesToOmit.Add("DateCreated");
       propertiesToOmit.Add("DateModified");
-      using (SqlDataReader reader = ExecutionHelper.ExecuteReader("UserProfiles_InsertUpdate", GetSQLParameters()))
+      using (SqlDataReader reader = ExecutionHelper.ExecuteReader("GeneralUser_InsertUpdate", GetSQLParameters()))
       {
         if (reader == null)
           return;
@@ -68,38 +66,38 @@ namespace TMXClasses
     #endregion
 
     #region Static Methods
-    public static UserProfiles GetUser(int id)
+    public static GeneralUser GetUser(int id)
     {
-      return new UserProfiles(id);
+      return new GeneralUser(id);
     }
 
-    public static List<UserProfiles> GetAll()
+    public static List<GeneralUser> GetAll()
     {
-      UserProfilesCollection userProfiles = new UserProfilesCollection();
+      GeneralUserCollection userProfiles = new GeneralUserCollection();
       userProfiles.LoadAll();
       return userProfiles;
     }
 
-    public static UserProfilesCollection Delete(int id)
+    public static GeneralUserCollection Delete(int id)
     {
-      UserProfilesCollection userProfiles = new UserProfilesCollection();
+      GeneralUserCollection userProfiles = new GeneralUserCollection();
       userProfiles.DeleteUser(id);
       return userProfiles;
     }
     #endregion
 
     #region Collection
-    public class UserProfilesCollection : List<UserProfiles>
+    public class GeneralUserCollection : List<GeneralUser>
     {
       public void LoadAll()
       {
-        using (SqlDataReader reader = ExecutionHelper.ExecuteReader("dbo.UserProfiles_SelectAll"))
+        using (SqlDataReader reader = ExecutionHelper.ExecuteReader("dbo.GeneralUser_SelectAll"))
         {
           if (reader == null)
             return;
           while (reader.Read())
           {
-            UserProfiles user = new UserProfiles();
+            GeneralUser user = new GeneralUser();
             user.SetProperties(reader);
             Add(user);
           }
@@ -110,7 +108,7 @@ namespace TMXClasses
       {
         List<SqlParameter> parameters = new List<SqlParameter>();
         parameters.Add(new SqlParameter("@Id", id));
-        ExecutionHelper.ExecuteNonQuery("dbo.UserProfiles_Delete", parameters);
+        ExecutionHelper.ExecuteNonQuery("dbo.GeneralUser_Delete", parameters);
       }
     }
     #endregion

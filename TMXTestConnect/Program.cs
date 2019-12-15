@@ -17,25 +17,26 @@ namespace TMXTestConnect
   {
     static void Main(string[] args)
     {
-      using (SqlConnection conn = DBConnect.GetConnection())
-      {
-        try
-        {
-          //conn.Open();
-          Console.WriteLine("Connection Open!");
+      //Console.WriteLine(value: UsersService.GetAllUsers());
+      //using (SqlConnection conn = DBConnect.GetConnection())
+      //{
+      //  try
+      //  {
+      //    //conn.Open();
+      //    Console.WriteLine("Connection Open!");
 
-          //List<Users> users = new List<Users>();
-          //users = GetAllUsers();
-          //foreach (Users user in users)
-          //{
-          //  Console.WriteLine($"User {user.id}: {user.fname} {user.lname}");
-          //}
-        }
-        catch (SqlException ex)
-        {
-          Console.WriteLine(ex.Message);
-        }
-      }
+      //    //List<Users> users = new List<Users>();
+      //    //users = GetAllUsers();
+      //    //foreach (Users user in users)
+      //    //{
+      //    //  Console.WriteLine($"User {user.id}: {user.fname} {user.lname}");
+      //    //}
+      //  }
+      //  catch (SqlException ex)
+      //  {
+      //    Console.WriteLine(ex.Message);
+      //  }
+      //}
     }
 
     //public static List<Users> GetAllUsers()

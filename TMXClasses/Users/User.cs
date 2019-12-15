@@ -10,7 +10,7 @@ using TMXClasses;
 
 namespace TMXClasses
 {
-  public class Users : BaseClass
+  public class User : BaseClass
   {
     #region Properties
     public int Id { get; set; }
@@ -23,11 +23,11 @@ namespace TMXClasses
     #endregion
 
     #region Constructors
-    public Users()
+    public User()
     {
     }
 
-    public Users(int Id)
+    public User(int Id)
     {
       this.Id = Id;
       Load();
@@ -62,12 +62,12 @@ namespace TMXClasses
     #endregion
 
     #region Static Methods
-    public static Users GetUser(int id)
+    public static User GetUser(int id)
     {
-      return new Users(id);
+      return new User(id);
     }
 
-    public static List<Users> GetAll()
+    public static List<User> GetAll()
     {
       UsersCollection users = new UsersCollection();
       users.LoadAll();
@@ -83,7 +83,7 @@ namespace TMXClasses
     #endregion
 
     #region Collection
-    public class UsersCollection : List<Users>
+    public class UsersCollection : List<User>
     {
       public void LoadAll()
       {
@@ -93,7 +93,7 @@ namespace TMXClasses
             return;
           while (reader.Read())
           {
-            Users user = new Users();
+            User user = new User();
             user.SetProperties(reader);
             Add(user);
           }

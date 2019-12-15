@@ -17,15 +17,15 @@ namespace TMX.Web.Controllers.Api
     [Route("All"), HttpGet]
     public HttpResponseMessage GetAllUsers()
     {
-      ItemsResponse<Users> response = new ItemsResponse<Users>();
-      response.Items = UsersService.GetAllUsers();
+      ItemsResponse<User> response = new ItemsResponse<User>();
+      //response.Items = UsersService.GetAllUsers();
       return Request.CreateResponse(response);
     }
 
     [Route("{id:int}"), HttpGet]
     public HttpResponseMessage GetUserById(int id)
     {
-      ItemResponse<Users> response = new ItemResponse<Users>();
+      ItemResponse<User> response = new ItemResponse<User>();
       response.Item = UsersService.GetUser(id);
       return Request.CreateResponse(response);
     }
@@ -34,7 +34,7 @@ namespace TMX.Web.Controllers.Api
     public HttpResponseMessage AddUser(UsersInsertRequest model)
     {
       ItemResponse<int> response = new ItemResponse<int>();
-      response.Item = UsersService.CreateUpdateUser(model);
+      //response.Item = UsersService.CreateUpdateUser(model);
       return Request.CreateResponse(response);
     }
 
@@ -42,7 +42,7 @@ namespace TMX.Web.Controllers.Api
     public HttpResponseMessage UpdateUser(UsersUpdateRequest model)
     {
       SuccessResponse response = new SuccessResponse();
-      UsersService.CreateUpdateUser(model);
+      //UsersService.CreateUpdateUser(model);
       return Request.CreateResponse(response);
     }
 
@@ -50,7 +50,7 @@ namespace TMX.Web.Controllers.Api
     public HttpResponseMessage DeleteUser(int id)
     {
       SuccessResponse response = new SuccessResponse();
-      UsersService.DeleteUser(id);
+      //UsersService.DeleteUser(id);
       return Request.CreateResponse(response);
     }
   }
