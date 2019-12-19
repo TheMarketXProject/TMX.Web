@@ -7,6 +7,11 @@ using TMX.Data.Extensions;
 using System.Data.SqlClient;
 using TMX.Web.Models.Requests;
 using TMXClasses;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity.EntityFramework;
+using TMX.Web.Models;
+using TMX.Web.Exceptions;
+using Microsoft.AspNet.Identity;
 //using TMX.EDM;
 
 namespace TMX.Web.Services
@@ -23,9 +28,39 @@ namespace TMX.Web.Services
     //  return users;
     //}
 
+    public static IdentityUser CreateUser(string userName, string email, string password)
+    {
+      ApplicationUserManager userManager = GetUserManager();
+
+      ApplicationUser newUser = new ApplicationUser { UserName = userName, Email = email, LockoutEnabled = false };
+      IdentityResult result = null;
+      try
+      {
+        result = userManager.Create(newUser, password);
+      }
+      catch
+      {
+        throw new IdentityResultException(result);
+      }
+
+      if (result.Succeeded)
+      {
+        return newUser;
+      }
+      else
+      {
+        throw new IdentityResultException(result);
+      }
+    }
+
     public static User GetUser(int id)
     {
       return User.GetUser(id);
+    }
+
+    public static ApplicationUserManager GetUserManager()
+    {
+      return HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
     }
 
     //public static int CreateUpdateUser(object model)

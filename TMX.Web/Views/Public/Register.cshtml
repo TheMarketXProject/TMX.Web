@@ -1,52 +1,73 @@
 ﻿@{
-  Layout = null;
+  Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
 
-<html>
-<head>
-  <meta name="viewport" content="width=device-width" />
-  <title></title>
-</head>
-<body>
-  <div id="id02" class="modal">
+<div id="id02" class="">
 
-    <form class="modal-content animate" action="/action_page.php" method="post">
-      <div class="imgcontainer">
-        <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">×</span>
-      </div>
+  <form class="modal-content animate" id="form" action="page_forms_components.html" method="post" onsubmit="return false;">
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">×</span>
+    </div>
 
-      <div class="container">
-        <label for="uname"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="uname" required="">
+    <div class="container">
+      <label for="uname"><b>Username</b></label>
+      <input type="text" placeholder="Enter Username" name="uname" required="">
 
-        <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" required="">
+      <label for="psw"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="psw" required="">
 
-        <label for="psw"><b>Fisrt Name</b></label>
-        <input type="text" placeholder="First Name" name="fname" required="">
+      <label for="fname"><b>First Name</b></label>
+      <input type="text" placeholder="First Name" name="fname" required="">
 
-        <label for="psw"><b>Last Name</b></label>
-        <input type="text" placeholder="Last Name" name="lname" required="">
+      <label for="lname"><b>Last Name</b></label>
+      <input type="text" placeholder="Last Name" name="lname" required="">
 
-        <label for="psw"><b>E-mail</b></label>
-        <input type="text" placeholder="E-mail Address" name="email" required="">
+      <label for="email"><b>E-mail</b></label>
+      <input type="text" placeholder="E-mail Address" name="email" required="">
 
-        <button type="submit">Register</button>
-      </div>
+    </div>
 
-      <div class="container" style="background-color:#f1f1f1">
-        <a type="button" href="~/" class="cancelbtn">Cancel</a>
-      </div>
-    </form>
-  </div>
-</body>
-</html>
-
+    <div class="container" style="background-color:#f1f1f1">
+      <button type="submit" id="submitButton">Submit</button>
+      <a type="button" href="~/" class="cancelbtn">Cancel</a>
+    </div>
+  </form>
+</div>
 @section Scripts{
-<script type="text/javascript">
 
+  <script type="text/javascript">
+    tmx.page.startUp = function () {
+      console.log("Starting up Register page...");
+      $("#submitButton").on("click", tmx.page.handlers.onSubmitForm);
+    }
+
+    tmx.services.registration = {};
+    tmx.services.registration.add = function (regData, onSuccess, onError) {
+
+      var url = "/api/users/register";
+
+      var settings = {
+        cache: false
+        , contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+        , data: regData
+        , dataType: "json"
+        , success: onSuccess
+        , error: onError
+        , type: "POST"
+      };
+
+      $.ajax(url, settings);
+    }
+
+    tmx.page.handlers.onSubmitForm = function () {
+      console.log("submitting form...");
+      var regData = $("#form").serialize();
+      console.log(regData);
+      tmx.services.registration.add(regData, tmx.page.ajaxRegisterSuccess, tmx.page.ajaxRegisterError);
+    }
   </script>
-
 }
+
+
+

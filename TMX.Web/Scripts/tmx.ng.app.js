@@ -1,8 +1,8 @@
-﻿/// <reference path="TMX.js" />
+﻿/// <reference path="tmx.js" />
 /// <reference path="/scripts/ng/angular.js" /> , 'angularNumberPicker', 'enumFlag', 'ngMessages', "ngSanitize", "isteven-multi-select", 'ckeditor'
 
 
-TMX.ng = {
+tmx.ng = {
 	app: {
 		services: {}
 		, controllers: {}
@@ -12,18 +12,18 @@ TMX.ng = {
 	, examples: {}
     , defaultDependencies: ["ngAnimate", "ngRoute", "ui.bootstrap", "ngSanitize", "ngMessages"]
     , getModuleDependencies: function () {
-    	if (TMX.extraNgDependencies) {
-    		var newItems = TMX.ng.defaultDependencies.concat(TMX.extraNgDependencies);
+    	if (tmx.extraNgDependencies) {
+    		var newItems = tmx.ng.defaultDependencies.concat(tmx.extraNgDependencies);
     		return newItems;
     	}
-    	return TMX.ng.defaultDependencies;
+    	return tmx.ng.defaultDependencies;
     }
 };
 
-TMX.ng.app.module = angular.module('TMXApp', TMX.ng.getModuleDependencies());
+tmx.ng.app.module = angular.module('tmxApp', tmx.ng.getModuleDependencies());
 
 // CATEGORIES
-TMX.ng.app.module.directive('gynCategories', [
+tmx.ng.app.module.directive('gynCategories', [
 function () {
 	return {
 		restrict: 'E',
@@ -33,7 +33,7 @@ function () {
 }
 ]);
 
-TMX.ng.app.module.directive('obCategories', [
+tmx.ng.app.module.directive('obCategories', [
 function () {
 	return {
 		restrict: 'E',
@@ -43,7 +43,7 @@ function () {
 }
 ]);
 
-TMX.ng.app.module.directive('officeCategories', [
+tmx.ng.app.module.directive('officeCategories', [
 function () {
 	return {
 		restrict: 'E',
@@ -53,7 +53,7 @@ function () {
 }
 ]);
 
-TMX.ng.app.module.filter('encodeUri', function ($window) {
+tmx.ng.app.module.filter('encodeUri', function ($window) {
 
 	//function newEncode(data) {
 	//    return $window.encodeURIComponent(data).replace(/%20/g, '+');
@@ -63,7 +63,7 @@ TMX.ng.app.module.filter('encodeUri', function ($window) {
 	return $window.encodeURIComponent;
 });
 
-TMX.ng.app.module.filter('htmlToPlaintext', function ($window) {
+tmx.ng.app.module.filter('htmlToPlaintext', function ($window) {
 	return function (text) {
 		return text ? String(text).replace(/<[^>]+>/gm, '') : '';
 	};
@@ -71,9 +71,9 @@ TMX.ng.app.module.filter('htmlToPlaintext', function ($window) {
 
 
 
-TMX.ng.app.module.value('$TMX', TMX.page);
+tmx.ng.app.module.value('$tmx', tmx.page);
 
-TMX.ng.app.module.factory('$daysEnum', [
+tmx.ng.app.module.factory('$daysEnum', [
     function () {
     	return Object.freeze({
     		SUNDAY: 1,
@@ -87,7 +87,7 @@ TMX.ng.app.module.factory('$daysEnum', [
     }
 ]);
 
-TMX.ng.app.module.factory('$eventsEnum', [
+tmx.ng.app.module.factory('$eventsEnum', [
     function () {
     	return Object.freeze({
     		HEADER_DATA: 'header_data'
@@ -97,7 +97,7 @@ TMX.ng.app.module.factory('$eventsEnum', [
 
 //#region - base functions and objects -
 
-TMX.ng.exceptions.argumentException = function (msg) {
+tmx.ng.exceptions.argumentException = function (msg) {
 	this.message = msg;
 	var err = new Error();
 
@@ -105,7 +105,7 @@ TMX.ng.exceptions.argumentException = function (msg) {
 	console.error(msg + "\n" + err.stack);
 }
 
-TMX.ng.app.services.baseEventServiceFactory = function ($rootScope) {
+tmx.ng.app.services.baseEventServiceFactory = function ($rootScope) {
 
 	var factory = this;
 
@@ -135,7 +135,7 @@ TMX.ng.app.services.baseEventServiceFactory = function ($rootScope) {
 }
 
 
-TMX.ng.app.services.baseService = function ($win, $loc, $util) {
+tmx.ng.app.services.baseService = function ($win, $loc, $util) {
 	/*
         when this function is envoked by Angular, Angular wants an instance of the Service object. 
 		
@@ -168,7 +168,7 @@ TMX.ng.app.services.baseService = function ($win, $loc, $util) {
 	return baseService;
 }
 
-TMX.ng.app.controllers.baseController = function ($doc, $logger, $sab, $route, $routeParams, /*$eventHandlerService, */$eventsEnum, $location /*, $alertService*/) {
+tmx.ng.app.controllers.baseController = function ($doc, $logger, $sab, $route, $routeParams, /*$eventHandlerService, */$eventsEnum, $location /*, $alertService*/) {
 	/*
         this is intended to serve as the base controller
     */
@@ -176,7 +176,7 @@ TMX.ng.app.controllers.baseController = function ($doc, $logger, $sab, $route, $
 	baseControler = {
 		$document: $doc
 		, $log: $logger
-        , $TMX: $sab
+        , $tmx: $sab
         , $location: $location
         , merge: $.extend
 		//, $eventHandlerService: $eventHandlerService
@@ -206,25 +206,25 @@ TMX.ng.app.controllers.baseController = function ($doc, $logger, $sab, $route, $
 
 //#region  - core ng wrapper functions --
 
-TMX.ng.getControllerInstance = function (jQueryObj) {///used to grab an instance of a controller bound to an Element
+tmx.ng.getControllerInstance = function (jQueryObj) {///used to grab an instance of a controller bound to an Element
 	console.log(jQueryObj);
 	return angular.element(jQueryObj[0]).controller();
 }
 
-TMX.ng.addService = function (ngModule, serviceName, dependencies, factory) {
+tmx.ng.addService = function (ngModule, serviceName, dependencies, factory) {
 	/*
-    TMX.ng.app.module.service(
+    tmx.ng.app.module.service(
     '$baseService', 
-    ['$window', '$location', '$utils', TMX.ng.app.services.baseService]);
+    ['$window', '$location', '$utils', tmx.ng.app.services.baseService]);
     */
 	if (!ngModule ||
 		!serviceName || !factory ||
 		!angular.isFunction(factory)) {
-		throw new TMX.ng.exceptions.argumentException("Invalid Service Call");
+		throw new tmx.ng.exceptions.argumentException("Invalid Service Call");
 	}
 
 	if (dependencies && !angular.isArray(dependencies)) {
-		throw new TMX.ng.exceptions.argumentException("Invalid Service Call [dependencies]");
+		throw new tmx.ng.exceptions.argumentException("Invalid Service Call [dependencies]");
 	}
 	else if (!dependencies) {
 		dependencies = [];
@@ -236,17 +236,17 @@ TMX.ng.addService = function (ngModule, serviceName, dependencies, factory) {
 
 }
 
-TMX.ng.registerService = TMX.ng.addService;
+tmx.ng.registerService = tmx.ng.addService;
 
-TMX.ng.addController = function (ngModule, controllerName, dependencies, factory) {
+tmx.ng.addController = function (ngModule, controllerName, dependencies, factory) {
 	if (!ngModule ||
 		!controllerName || !factory ||
 		!angular.isFunction(factory)) {
-		throw new TMX.ng.exceptions.argumentException("Invalid Service defined");
+		throw new tmx.ng.exceptions.argumentException("Invalid Service defined");
 	}
 
 	if (dependencies && !angular.isArray(dependencies)) {
-		throw new TMX.ng.exceptions.argumentException("Invalid Service Call [dependencies]");
+		throw new tmx.ng.exceptions.argumentException("Invalid Service Call [dependencies]");
 	}
 	else if (!dependencies) {
 		dependencies = [];
@@ -257,7 +257,7 @@ TMX.ng.addController = function (ngModule, controllerName, dependencies, factory
 
 }
 
-TMX.ng.registerController = TMX.ng.addController;
+tmx.ng.registerController = tmx.ng.addController;
 
 
 //#endregions
@@ -274,20 +274,20 @@ the last item in this array is invoked to create the object and passed the prece
 
 
 */
-TMX.ng.addService(TMX.ng.app.module
+tmx.ng.addService(tmx.ng.app.module
 					, "$baseService"
 					, ['$window', '$location']
-					, TMX.ng.app.services.baseService);
+					, tmx.ng.app.services.baseService);
 
-TMX.ng.addService(TMX.ng.app.module
+tmx.ng.addService(tmx.ng.app.module
 					, "$eventServiceFactory"
 					, ["$rootScope"]
-					, TMX.ng.app.services.baseEventServiceFactory);
+					, tmx.ng.app.services.baseEventServiceFactory);
 
-TMX.ng.addService(TMX.ng.app.module
+tmx.ng.addService(tmx.ng.app.module
 					, "$baseController"
-					, ['$document', '$log', '$TMX', "$route", "$routeParams", /*"$eventHandlerService", */"$eventsEnum", "$location", /*"$alertService"*/]
-					, TMX.ng.app.controllers.baseController);
+					, ['$document', '$log', '$tmx', "$route", "$routeParams", /*"$eventHandlerService", */"$eventsEnum", "$location", /*"$alertService"*/]
+					, tmx.ng.app.controllers.baseController);
 
 
 //#endregion
@@ -305,7 +305,7 @@ TMX.ng.addService(TMX.ng.app.module
 
 
 
-TMX.ng.examples.exampleServices = function ($baseService) {
+tmx.ng.examples.exampleServices = function ($baseService) {
 	/*
 		when this function is envoked by Angular,
 		Angular wants an instance of the Service object. here
@@ -317,13 +317,13 @@ TMX.ng.examples.exampleServices = function ($baseService) {
 		code with this new pattern.
 	*/
 
-	var aTMXServiceObject = TMX.services.users;
-	var newService = angular.merge(true, {}, aTMXServiceObject, baseService);
+	var atmxServiceObject = tmx.services.users;
+	var newService = angular.merge(true, {}, atmxServiceObject, baseService);
 
 	return newService;
 }
 
-TMX.ng.examples.exampleController = function ($scope, $baseController, $exampleSvc) {
+tmx.ng.examples.exampleController = function ($scope, $baseController, $exampleSvc) {
 
 	var vm = this;
 	vm.items = null;
@@ -350,15 +350,15 @@ TMX.ng.examples.exampleController = function ($scope, $baseController, $exampleS
 }
 
 
-TMX.ng.addService(TMX.ng.app.module
+tmx.ng.addService(tmx.ng.app.module
 					, "$exampleSvc"
 					, ['$baseService']
-					, TMX.ng.examples.exampleServices);
+					, tmx.ng.examples.exampleServices);
 
-TMX.ng.addController(TMX.ng.app.module
+tmx.ng.addController(tmx.ng.app.module
 	, 'controllerName'
 	, ['$scope', '$baseController', '$exampleSvc']
-	, TMX.ng.examples.exampleController
+	, tmx.ng.examples.exampleController
 	);
 
 
