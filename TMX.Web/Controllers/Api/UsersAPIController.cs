@@ -19,7 +19,7 @@ namespace TMX.Web.Controllers.Api
   public class UsersAPIController : ApiController
   {
     [Route("Register"), HttpPost]
-    public HttpResponseMessage RegisterUser(IdentityUser model)
+    public async Task<HttpResponseMessage> RegisterUser(IdentityUser model)
     {
       if (!ModelState.IsValid)
       {
@@ -36,13 +36,14 @@ namespace TMX.Web.Controllers.Api
 
           SendConfirmationEmailRequest request = new SendConfirmationEmailRequest(register.UserName, register.Email, tokensAddRequest.TokenId);
           MessagingService messaging = new MessagingService();
-          Task t = messaging.SendConfirmationEmail(request);
+          await messaging.SendConfirmationEmail(request);
+          //RegistrationService.RegisterUser(register);
         }
         else
         {
           return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Register wasn't successfull Please try again");
         }
-        return Request.CreateResponse(register);
+        return Request.CreateResponse(new SuccessResponse());
       }
 
       catch (IdentityResultException iex)
@@ -60,6 +61,46 @@ namespace TMX.Web.Controllers.Api
         return Request.CreateResponse(HttpStatusCode.BadRequest, er);
 
       }
+    }
+
+    [Route("UserTokens"), HttpPost]
+    public HttpResponseMessage AddUserTokens(UserTokensAddRequest model)
+    {
+      // if the Model does not pass validation, there will be an Error response returned with errors
+      if (!ModelState.IsValid)
+      {
+        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+      }
+
+      ItemResponse<Guid> response = new ItemResponse<Guid>();
+
+      response.Item = UserTokensService.Add(model);
+
+      return Request.CreateResponse(response);
+    }
+
+    [Route("ConfirmEmail/{tokenId:guid}"), HttpPost]
+    public HttpResponseMessage ConfirmEmail(Guid tokenId)
+    {
+      if (!ModelState.IsValid)
+      {
+        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+      }
+
+      UserTokens token = UserTokensService.GetToken(tokenId);
+      if (token == null || token.TokenId == null )
+      {
+        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Request token is invalid or expired.");
+      }
+
+      // Attempt to set AspNetUsers.EmailConfirmed value = true and insert
+      // new record in Users table
+      bool confirmSuccess = UserDataService.ConfirmEmail(token);
+      if (!confirmSuccess)
+      {
+        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Failed to confirm registration.");
+      }
+      return Request.CreateResponse(new SuccessResponse());
     }
 
     [Route("All"), HttpGet]

@@ -2,11 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
-using TMX.Data;
 using TMX.Data.Utlilties.SQL;
-using TMXClasses;
 
 namespace TMXClasses
 {
@@ -46,6 +42,21 @@ namespace TMXClasses
         if (reader.Read())
           SetProperties(reader);
       }
+    }
+
+    public void Add()
+    {
+      List<SqlParameter> parameters = new List<SqlParameter>();
+      parameters.Add(new SqlParameter("@Email", Email));
+      parameters.Add(new SqlParameter("@IsActive", IsActive));
+      ExecutionHelper.ExecuteReader("dbo.Users_Insert", parameters);
+      //using (SqlDataReader reader = ExecutionHelper.ExecuteReader("dbo.Users_Insert", GetSQLParameters()))
+      //{
+      //  if (reader == null)
+      //    return;
+      //  if (reader.Read())
+      //    SetProperties(reader);
+      //}
     }
 
     public void Update()

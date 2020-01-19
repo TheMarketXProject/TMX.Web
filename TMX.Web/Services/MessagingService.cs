@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 using System.Web;
 using TMX.Web.Models.Requests;
 using SendGrid;
-using SendGrid.Helpers.Mail;
+using System.Configuration;
+//using SendGrid.Helpers.Mail;
 
 namespace TMX.Web.Services
 {
@@ -19,12 +20,6 @@ namespace TMX.Web.Services
     {
       try
       {
-        //SendGridMessage myMessage = new SendGridMessage();
-        //myMessage.AddTo(model.Email);
-        //myMessage.From = new EmailAddress("themarketx@gmail.com", "TMX Team");
-        //myMessage.Subject = "Please Confirm Email";
-
-
         MailMessage myMessage = new MailMessage();
         myMessage.To.Add(model.Email);
         myMessage.From = new MailAddress("themarketx@gmail.com", "TMX Team");
@@ -32,7 +27,7 @@ namespace TMX.Web.Services
 
         string path = HttpContext.Current.Server.MapPath("~/Templates/ConfirmEmail.html");
         string contents = File.ReadAllText(path);
-        contents = contents.Replace("{{domain}}", "http://lms.dev/confirm/" + model.Token.ToString());
+        contents = contents.Replace("{{domain}}", "http://localhost:53203/confirm/" + model.Token.ToString());
         contents = contents.Replace("<%body%>", "Please Confirm Email");
 
         myMessage.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(contents, null, MediaTypeNames.Text.Html));
@@ -42,14 +37,16 @@ namespace TMX.Web.Services
       catch (Exception ex)
       {
         Console.WriteLine(ex.Message);
+        throw new Exception(ex.Message, ex);
       }
     }
 
     private async Task SendAsync(MailMessage message)
     {
       // Init SmtpClient and send
-      SmtpClient smtpClient = new SmtpClient("smtp.sendgrid.net", Convert.ToInt32(587));
-      NetworkCredential credentials = new NetworkCredential("h2rnng@yahoo.com", "CPIpass1!");
+      SmtpClient smtpClient = new SmtpClient("smtp.sendgrid.net", 587);
+      string apiKey = ConfigurationManager.AppSettings["tmx-sendgrid"];
+      NetworkCredential credentials = new NetworkCredential("apikey", apiKey);
       smtpClient.Credentials = credentials;
       await smtpClient.SendMailAsync(message);
     }

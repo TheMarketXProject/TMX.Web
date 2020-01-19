@@ -33,8 +33,8 @@ namespace TMXClasses
     public void Load()
     {
       List<SqlParameter> parameters = new List<SqlParameter>();
-      parameters.Add(new SqlParameter("@Id", TokenId));
-      using (SqlDataReader reader = ExecutionHelper.ExecuteReader("dbo.Users_SelectById", parameters))
+      parameters.Add(new SqlParameter("@TokenId", TokenId));
+      using (SqlDataReader reader = ExecutionHelper.ExecuteReader("dbo.UserTokens_SelectByToken", parameters))
       {
         if (reader == null)
           return;
@@ -46,13 +46,21 @@ namespace TMXClasses
     public void Add()
     {
       ArrayList propertiesToOmit = new ArrayList();
-      using (SqlDataReader reader = ExecutionHelper.ExecuteReader("dbo.UserTokens_Insert", GetSQLParameters()))
+      propertiesToOmit.Add("TokenId");
+      using (SqlDataReader reader = ExecutionHelper.ExecuteReader("dbo.UserTokens_Insert", GetSQLParameters(propertiesToOmit)))
       {
         if (reader == null)
           return;
         if (reader.Read())
           SetProperties(reader);
       }
+    }
+
+    public static void Delete(Guid tokenId)
+    {
+      List<SqlParameter> parameters = new List<SqlParameter>();
+      parameters.Add(new SqlParameter("@TokenId", tokenId));
+      ExecutionHelper.ExecuteNonQuery("UserTokens_Delete", parameters);
     }
     #endregion
 

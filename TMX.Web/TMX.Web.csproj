@@ -298,6 +298,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\MessageAPIController.cs" />
     <Compile Include="Controllers\Api\UsersAPIController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PublicController.cs" />
@@ -322,6 +323,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\MessagingService.cs" />
+    <Compile Include="Services\RegistrationService.cs" />
+    <Compile Include="Services\UserDataService.cs" />
     <Compile Include="Services\UserProfilesService.cs" />
     <Compile Include="Services\UsersService.cs" />
     <Compile Include="Services\UserTokensService.cs" />
@@ -1084,6 +1087,9 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Services\messagingService.js" />
+    <Content Include="Scripts\Services\registrationService.js" />
+    <Content Include="Scripts\Services\userTokensService.js" />
     <Content Include="Scripts\tmx.js" />
     <Content Include="Scripts\tmx.ng.app.js" />
     <Content Include="Scripts\sabio.services.categories.js" />
@@ -1166,6 +1172,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Public\Login.cshtml" />
     <Content Include="Views\Public\Register.cshtml" />
+    <Content Include="Views\Public\ConfirmEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

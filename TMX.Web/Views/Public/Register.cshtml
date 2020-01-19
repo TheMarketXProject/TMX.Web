@@ -12,19 +12,19 @@
 
     <div class="container">
       <label for="uname"><b>Username</b></label>
-      <input type="text" placeholder="Enter Username" name="uname" required="">
+      <input type="text" placeholder="Enter Username" name="UserName" required="">
 
       <label for="psw"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="psw" required="">
+      <input type="password" placeholder="Enter Password" name="PasswordHash" required="">
 
       <label for="fname"><b>First Name</b></label>
-      <input type="text" placeholder="First Name" name="fname" required="">
+      <input type="text" placeholder="First Name" name="FirstName" required="">
 
       <label for="lname"><b>Last Name</b></label>
-      <input type="text" placeholder="Last Name" name="lname" required="">
+      <input type="text" placeholder="Last Name" name="LastName" required="">
 
       <label for="email"><b>E-mail</b></label>
-      <input type="text" placeholder="E-mail Address" name="email" required="">
+      <input type="text" placeholder="E-mail Address" name="Email" required="">
 
     </div>
 
@@ -35,36 +35,37 @@
   </form>
 </div>
 @section Scripts{
-
+  <script src="~/Scripts/Services/registrationService.js"></script>
+  <script src="~/Scripts/Services/userTokensService.js"></script>
+  <script src="~/Scripts/Services/messagingService.js"></script>
   <script type="text/javascript">
     tmx.page.startUp = function () {
       console.log("Starting up Register page...");
       $("#submitButton").on("click", tmx.page.handlers.onSubmitForm);
     }
 
-    tmx.services.registration = {};
-    tmx.services.registration.add = function (regData, onSuccess, onError) {
-
-      var url = "/api/users/register";
-
-      var settings = {
-        cache: false
-        , contentType: "application/x-www-form-urlencoded; charset=UTF-8"
-        , data: regData
-        , dataType: "json"
-        , success: onSuccess
-        , error: onError
-        , type: "POST"
-      };
-
-      $.ajax(url, settings);
-    }
+    var regData;
 
     tmx.page.handlers.onSubmitForm = function () {
       console.log("submitting form...");
-      var regData = $("#form").serialize();
+      regData = $("#form").serialize();
       console.log(regData);
       tmx.services.registration.add(regData, tmx.page.ajaxRegisterSuccess, tmx.page.ajaxRegisterError);
+    }
+
+    tmx.page.ajaxRegisterSuccess = function (data, status, xhr) {
+      console.log("Registration successful!");
+      alert("A Confirmation Email has been sent to your mailbox. Please confirm your email to continue.");
+    }
+
+    tmx.page.ajaxRegisterError = function (xhr, status, errorThrown) {
+      console.log("Registration failed!");
+      var errors = xhr.responseJSON.Errors;
+      var message = "The following errors occured: <br>"
+      for (var i = 0; i < errors.length; i++) {
+        message += errors[i] + "<br>";
+      }
+      alert(message);
     }
   </script>
 }

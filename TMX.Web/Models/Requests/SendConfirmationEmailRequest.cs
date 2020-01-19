@@ -17,6 +17,8 @@ namespace TMX.Web.Models.Requests
     [Required]
     public Guid Token { get; set; }
 
+    public SendConfirmationEmailRequest() { }
+
     public SendConfirmationEmailRequest(string username, string email, Guid token)
     {
       Username = username;

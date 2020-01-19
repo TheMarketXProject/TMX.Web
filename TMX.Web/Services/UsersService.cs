@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using TMX.Web.Models;
 using TMX.Web.Exceptions;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 //using TMX.EDM;
 
 namespace TMX.Web.Services
@@ -61,6 +62,48 @@ namespace TMX.Web.Services
     public static ApplicationUserManager GetUserManager()
     {
       return HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+    }
+
+    public static ApplicationUser GetUser(string username)
+    {
+      ApplicationUserManager userManager = GetUserManager();
+      IAuthenticationManager authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
+
+      ApplicationUser user = userManager.FindByName(username);
+
+      return user;
+    }
+
+    public static ApplicationUser GetUserByEmail(string email)
+    {
+      ApplicationUserManager userManager = GetUserManager();
+      IAuthenticationManager authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
+
+      ApplicationUser user = userManager.FindByEmail(email);
+
+      return user;
+    }
+
+    public static ApplicationUser GetUserbyUserName(string userName)
+    {
+
+      ApplicationUserManager userManager = GetUserManager();
+      IAuthenticationManager authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
+
+      ApplicationUser user = userManager.FindByName(userName);
+
+      return user;
+    }
+
+    public static ApplicationUser GetUserById(string userId)
+    {
+
+      ApplicationUserManager userManager = GetUserManager();
+      IAuthenticationManager authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
+
+      ApplicationUser user = userManager.FindById(userId);
+
+      return user;
     }
 
     //public static int CreateUpdateUser(object model)
