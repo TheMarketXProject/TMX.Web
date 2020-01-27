@@ -12,6 +12,7 @@ using TMX.Web.Services;
 using TMXClasses;
 using System.Threading.Tasks;
 using TMX.Web.Exceptions;
+using TMX.Web.Models;
 
 namespace TMX.Web.Controllers.Api
 {
@@ -63,6 +64,54 @@ namespace TMX.Web.Controllers.Api
       }
     }
 
+    [Route("Login"), HttpPost]
+    public HttpResponseMessage Login(LoginRequest model)
+    {
+      HttpResponseMessage responseMessage = null;
+      BaseResponse response = null;
+
+      if (!ModelState.IsValid)
+      {
+        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+      }
+
+      ApplicationUser user = UsersService.GetUser(model.UserName);
+
+      if (user != null)
+      {
+        bool emailConfirmed = UsersService.IsEmailConfirmed(model.UserName);
+
+        if (emailConfirmed)
+        {
+          bool isValidLogin = false;
+
+          isValidLogin = UsersService.IsLoginValid(model.UserName, model.Password);
+
+          if (isValidLogin)
+          {
+            response = new SuccessResponse();
+            responseMessage = Request.CreateResponse(response);
+          }
+          else
+          {
+            response = new ErrorResponse("Login failed! Please check if you typed in the correct Username and Password.");
+            responseMessage = Request.CreateResponse(HttpStatusCode.BadRequest, response);
+          }
+        }
+        else
+        {
+          response = new ErrorResponse("Please confirm your email before logging in.");
+          responseMessage = Request.CreateResponse(HttpStatusCode.BadRequest, response);
+        }
+      }
+      else
+      {
+        response = new ErrorResponse("Username does not exist! Please register.");
+        responseMessage = Request.CreateResponse(HttpStatusCode.BadRequest, response);
+      }
+      return responseMessage;
+    }
+
     [Route("UserTokens"), HttpPost]
     public HttpResponseMessage AddUserTokens(UserTokensAddRequest model)
     {
@@ -101,6 +150,41 @@ namespace TMX.Web.Controllers.Api
         return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Failed to confirm registration.");
       }
       return Request.CreateResponse(new SuccessResponse());
+    }
+
+    [Route("SendEmail"), HttpPost]
+    public HttpResponseMessage AddEmail(ForgotPasswordRequest model)
+    {
+      HttpResponseMessage responseMessage = null;
+      BaseResponse response = null;
+
+      if (!ModelState.IsValid)
+      {
+        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState); //if email is NOT valid return error response 
+      }
+
+      ApplicationUser user = UsersService.GetUserByEmail(model.Email); //grabs user email
+
+
+      if (user != null)
+      {
+        UserTokensAddRequest token = new UserTokensAddRequest();
+        token.UserName = user.UserName;
+        token.TokenType = 2;
+        Guid tokenId = UserTokensService.Add(token);
+
+        SendConfirmationEmailRequest request = new SendConfirmationEmailRequest(user.UserName, user.Email, tokenId);
+        MessagingService messaging = new MessagingService();
+        Task t = messaging.SendForgotPasswordEmail(request); //calling it to run
+      }
+      else
+      {
+        response = new ErrorResponse("I'm sorry, but your email can't be found, Please use correct Email");
+        responseMessage = Request.CreateResponse(HttpStatusCode.BadRequest, response);
+        return responseMessage;
+      }
+
+      return Request.CreateResponse(user);
     }
 
     [Route("All"), HttpGet]

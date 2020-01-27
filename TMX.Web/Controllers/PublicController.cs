@@ -30,5 +30,17 @@ namespace TMX.Web.Controllers
       model.Item = token;
       return View(model);
     }
+
+    [Route("~/ForgotPassword")]
+    public ActionResult ForgotPassword()
+    {
+      return View();
+    }
+
+    [Route("~/ResetPassword/{token:guid}")]
+    public ActionResult ResetPassword(Guid token)
+    {
+      return View(token);
+    }
   }
 }

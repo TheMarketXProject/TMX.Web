@@ -13,6 +13,8 @@ using TMX.Web.Models;
 using TMX.Web.Exceptions;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using TMX.Data.Utlilties.SQL;
+using System.Security.Claims;
 //using TMX.EDM;
 
 namespace TMX.Web.Services
@@ -57,6 +59,48 @@ namespace TMX.Web.Services
     public static User GetUser(int id)
     {
       return User.GetUser(id);
+    }
+
+    public static bool IsEmailConfirmed(string UserName)
+    {
+      bool result = false;
+      result = getEmailByUserName(UserName);
+
+      //DataProvider.ExecuteNonQuery(GetConnection, "dbo.AspNetUsers_GetEmailConfirmedV2"
+      //   , inputParamMapper: delegate (SqlParameterCollection paramCollection)
+      //   {
+      //     paramCollection.AddWithValue("@UserName", UserName);
+
+      //     //model binding
+      //     SqlParameter p = new SqlParameter("@EmailConfirmed", System.Data.SqlDbType.Bit);
+      //     p.Direction = System.Data.ParameterDirection.Output;
+
+      //     paramCollection.Add(p);
+
+      //   }, returnParameters: delegate (SqlParameterCollection param)
+      //   {
+      //     result = (bool)param["@EmailConfirmed"].Value;
+      //   }
+      //   );
+      return result;
+    }
+
+    public static bool IsLoginValid(string username, string password)
+    {
+      bool result = false;
+
+      ApplicationUserManager userManager = GetUserManager();
+      IAuthenticationManager authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
+
+      ApplicationUser user = userManager.Find(username, password);
+      if (user != null)
+      {
+        ClaimsIdentity signin = userManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+        authenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = true }, signin);
+        result = true;
+
+      }
+      return result;
     }
 
     public static ApplicationUserManager GetUserManager()
@@ -105,6 +149,25 @@ namespace TMX.Web.Services
 
       return user;
     }
+
+    #region Private Methods
+    private static bool getEmailByUserName(string userName)
+    {
+      List<SqlParameter> parameters = new List<SqlParameter>();
+      parameters.Add(new SqlParameter("@UserName", userName));
+      using (SqlDataReader reader = ExecutionHelper.ExecuteReader("dbo.AspNetUsers_GetEmailConfirmed", parameters))
+      {
+        if (reader != null && reader.Read())
+        {
+          return (bool)reader.GetValue(0);
+          //if(reader[reader.GetName(0)] != null)
+          //  return reader.GetValue
+        }
+          return false;
+          //SetProperties(reader);
+      }
+    }
+    #endregion
 
     //public static int CreateUpdateUser(object model)
     //{

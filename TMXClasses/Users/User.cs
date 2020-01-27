@@ -50,13 +50,6 @@ namespace TMXClasses
       parameters.Add(new SqlParameter("@Email", Email));
       parameters.Add(new SqlParameter("@IsActive", IsActive));
       ExecutionHelper.ExecuteReader("dbo.Users_Insert", parameters);
-      //using (SqlDataReader reader = ExecutionHelper.ExecuteReader("dbo.Users_Insert", GetSQLParameters()))
-      //{
-      //  if (reader == null)
-      //    return;
-      //  if (reader.Read())
-      //    SetProperties(reader);
-      //}
     }
 
     public void Update()
